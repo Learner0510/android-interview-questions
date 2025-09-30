@@ -1,4 +1,3 @@
-Here's your README.md with a clickable table of contents at the top:
 
 # 📚 Table of Contents
 
