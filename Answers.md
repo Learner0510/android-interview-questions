@@ -1,4 +1,3 @@
-
 # 📚 Table of Contents
 
 ### 🎯 Kotlin Language Fundamentals
@@ -95,17 +94,727 @@
 - [Unit Testing with Flow](#unit-testing-with-flow)
 
 ### 📱 Android Development
-- [Android Push Notification Flow (FCM)](#android-push-notification-flow-using-fcm)
-- [ViewModel](#what-is-a-viewmodel-and-how-is-it-useful)
-- [Fragment Default Constructor](#why-is-it-recommended-to-use-only-the-default-constructor-to-create-a-fragment)
+- #### Core Concepts
+- [Android App Lag](#android-app-lag)
+- [Context in Android](#context-in-android)
+- [Android Project Structure](#android-project-structure)
+- [AndroidManifest.xml](#androidmanifestxml)
+- [Application Class](#application-class)
+- [Android Application Components](#android-application-components)
+- #### UI Components: Activity & Fragment
+- [Activity and its Lifecycle](#activity-and-its-lifecycle)
+- [onCreate() vs onStart()](#oncreate-vs-onstart)
 - [setContentView() in onCreate()](#why-do-we-need-to-call-setcontentview-in-oncreate-of-activity-class)
 - [Activity Lifecycle - onDestroy without onPause/onStop](#when-only-ondestroy-is-called-for-an-activity-without-onpause-and-onstop)
-- [singleTask launchMode](#singletask-launchmode-in-android)
-- [Multidex in Android](#what-is-multidex-in-android)
+- [Fragment and its Lifecycle](#fragment-and-its-lifecycle)
+- [Fragment Default Constructor](#why-is-it-recommended-to-use-only-the-default-constructor-to-create-a-fragment)
+- [Fragment vs Activity](#fragment-vs-activity)
+- [When to Use a Fragment?](#when-to-use-a-fragment)
+- [add() vs replace() Fragment Transactions](#add-vs-replace-fragment-transactions)
+- [Purpose of addToBackStack()](#purpose-of-addtobackstack)
+- [Communicating Between Two Fragments](#communicating-between-two-fragments)
+- [Retained Fragment](#retained-fragment)
+- [FragmentPagerAdapter vs FragmentStatePagerAdapter](#fragmentpageradapter-vs-fragmentstatepageradapter)
+- #### UI Components: Views & Layouts
+- [Views and ViewGroups](#views-and-viewgroups)
+- [What is a View?](#what-is-a-view)
+- [What are ViewGroups?](#what-are-viewgroups)
+- [The View Tree](#the-view-tree)
+- [Optimizing Layouts](#optimizing-layouts)
+- [View.GONE vs View.INVISIBLE](#viewgone-vs-viewinvisible)
+- [Creating a Custom View](#creating-a-custom-view)
+- [RelativeLayout vs LinearLayout](#relativelayout-vs-linearlayout)
+- [ConstraintLayout Optimization](#constraintlayout-optimization)
+- [What is a Canvas?](#what-is-a-canvas)
+- [What is a SurfaceView?](#what-is-a-surfaceview)
+- #### UI Components: Lists
+- [Displaying Lists of Content](#displaying-lists-of-content)
+- [ListView vs RecyclerView](#listview-vs-recyclerview)
+- [How RecyclerView Works](#how-recyclerview-works)
+- [RecyclerView Components](#recyclerview-components)
+- [RecyclerView.Adapter and RecyclerView.ViewHolder](#recyclerviewadapter-and-recyclerviewviewholder)
+- [LayoutManager in RecyclerView](#layoutmanager-in-recyclerview)
+- [RecyclerView Optimization](#recyclerview-optimization)
+- [Optimizing Nested RecyclerView](#optimizing-nested-recyclerview)
+- [Handling Multiple View Types](#handling-multiple-view-types)
+- [DiffUtil](#diffutil)
+- [RecyclerView.setHasFixedSize(true)](#recyclerviewsethasfixedsizetrue)
+- [Updating a Specific Item](#updating-a-specific-item)
+- [SnapHelper](#snaphelper)
+- #### Look and Feel
+- [Dialogs and Toasts](#dialogs-and-toasts)
+- [What is a Spannable?](#what-is-a-spannable)
+- [What is a SpannableString?](#what-is-a-spannablestring)
+- [Best practices for using text](#best-practices-for-using-text-in-android)
+- [Implementing Dark mode](#how-to-implement-dark-mode-in-any-application)
+- #### Component Communication & Navigation
+- [Intents and Broadcasting](#intents-and-broadcasting)
+- [launchMode in Android](#launchmode-in-android)
+- [Bundle in Android](#bundle-in-android)
+- #### Background Processing & Threading
+- [Long-running Operations](#long-running-operations)
+- [Parallel tasks with Kotlin Flow](#how-to-run-parallel-tasks-and-get-a-callback-when-all-are-complete---long-running-tasks-in-parallel-with-kotlin-flow)
+- [ANR (Application Not Responding)](#what-is-anr-how-can-the-anr-be-prevented)
+- [Services](#services)
+- [Inter-process Communication](#inter-process-communication)
+- [ThreadPool Advantages](#threadpool-advantages)
+- [Daemon Threads vs. User Threads](#daemon-threads-vs-user-threads)
+- [Looper, Handler, and HandlerThread](#explain-looper-handler-and-handlerthread)
+- [Runnable vs. Thread](#can-you-explain-the-difference-between-a-runnable-and-a-thread-in-android)
+- #### Data Saving & Persistence
+- [Persisting Data in an Android App](#persisting-data-in-an-android-app)
+- [Preserving Activity State](#how-would-you-preserve-the-activity-state-during-a-screen-rotation)
+- [SharedPreferences - commit() vs apply()](#what-is-commit-and-apply-in-sharedpreferences)
+- [Jetpack DataStore Preferences](#jetpack-datastore-preferences)
+- [ORM (Object-Relational Mapping)](#what-is-orm-how-does-it-work)
+- [Scoped Storage](#explain-scoped-storage-in-android)
+- [Encrypting Data](#how-to-encrypt-data-in-android)
+- #### Memory Management
+- [Garbage Collection](#garbage-collection)
+- [Memory Leak vs. Out of Memory (OOM) Error](#memory-leak-vs-out-of-memoryoom-error)
 - [Force Garbage Collection](#is-it-possible-to-force-garbage-collection-in-android)
+- #### Working With Multimedia Content
+- [Handling Bitmaps](#how-do-you-handle-bitmaps-in-android-as-it-takes-too-much-memory)
+- [Bitmap Pool](#tell-about-the-bitmap-pool)
+- #### Miscellaneous
+- [ViewModel](#what-is-a-viewmodel-and-how-is-it-useful)
+- [Multidex in Android](#what-is-multidex-in-android)
+- [Android Push Notification Flow (FCM)](#android-push-notification-flow-using-fcm)
 
 ### 🌍 Cross-Platform
 - [Kotlin Multiplatform](#kotlin-multiplatform)
+
+### Long-running Operations
+
+#### How to run parallel tasks and get a callback when all are complete - Long-running tasks in parallel with Kotlin Flow
+To run parallel tasks and get a callback when all are complete in Kotlin Flow, you can use the **`zip`** or **`merge`** operators. The **`zip`** operator combines the latest values from multiple flows and emits a single value when all flows have emitted a value. This is useful when you need to wait for all tasks to complete before processing their results together. Conversely, the **`merge`** operator combines multiple flows into a single flow, emitting values as they become available from any of the source flows. To get a callback after all tasks are done, you can use **`merge`** with a **`collect`** block, and then use a counter or a similar mechanism to determine when all expected items have been received. For more complex scenarios, you can use **`coroutineScope`** with multiple **`async`** blocks to start parallel tasks and then **`awaitAll()`** to suspend until all tasks are finished, at which point you can execute your callback logic.
+
+#### What is ANR? How can the ANR be prevented?
+**ANR** stands for **Application Not Responding**. An ANR occurs when an Android app's main thread (UI thread) is blocked for too long, typically around 5 seconds for user input or 10 seconds for broadcast receivers. This makes the app appear frozen, leading to a system dialog that gives the user the option to either wait or close the app.
+
+To prevent ANRs:
+* **Offload long-running operations:** Move any time-consuming tasks, such as network calls, database queries, or complex calculations, off the main thread using Kotlin coroutines, `HandlerThread`, or other threading models.
+* **Use appropriate threading models:** Utilize Kotlin Coroutines with **`Dispatchers.IO`** or **`Dispatchers.Default`** for background work.
+* **Optimize UI updates:** Ensure that UI updates are as fast as possible. Avoid complex view hierarchies and excessive drawing operations.
+* **Avoid synchronous calls on the main thread:** Never perform I/O operations directly on the main thread.
+* **Profile your app:** Use Android Studio's profiler to identify performance bottlenecks.
+
+#### ThreadPool Advantages
+A **ThreadPool** is a managed collection of worker threads used to execute a queue of tasks. The main advantages are:
+* **Improved Performance:** A thread pool reuses existing threads, significantly reducing the overhead of creating and destroying threads.
+* **Resource Management:** It limits the number of threads running concurrently, preventing the system from being overwhelmed.
+* **Concurrency Control:** It provides a mechanism to manage and schedule a large number of tasks efficiently.
+* **Enhanced Stability:** It prevents the application from crashing due to an excessive number of threads exhausting system resources.
+
+#### Daemon Threads vs. User Threads
+* **User Threads:** These are foreground threads. The Java Virtual Machine (JVM) will not exit until all user threads have finished their execution.
+* **Daemon Threads:** These are background threads. The JVM will exit automatically once all user threads have completed, regardless of whether any daemon threads are still running. They are typically used for non-critical tasks like garbage collection. You can set a thread as a daemon thread using **`thread.setDaemon(true)`**.
+
+#### Explain Looper, Handler, and HandlerThread.
+* **`Looper`:** A **`Looper`** is a class that manages a message queue for a thread. The `Looper` "loops" forever, pulling messages from its queue and dispatching them to the appropriate **`Handler`**.
+* **`Handler`:** A **`Handler`** allows you to send messages (`Message` objects) or `Runnable` objects to a thread's message queue. It is the primary mechanism for communicating between background threads and the main thread for UI updates.
+* **`HandlerThread`:** A **`HandlerThread`** is a convenience class that simplifies creating a background thread that has its own `Looper` and message queue.
+
+#### Garbage Collection
+**Garbage Collection** (**GC**) is an automatic memory management process in which the JVM reclaims memory occupied by objects that are no longer in use by the application. The garbage collector identifies "unreachable" objects and deallocates their memory. This prevents memory leaks and simplifies memory management for developers.
+
+#### Memory Leak vs Out of Memory(OOM) Error
+* **Memory Leak:** A **memory leak** occurs when an object that is no longer needed remains referenced, preventing the garbage collector from reclaiming its memory. Over time, these unreleased objects consume more and more memory.
+* **Out of Memory (OOM) Error:** An **`OOM`** error occurs when the application attempts to allocate more memory than is available in the Java heap. This is often the **result of a severe memory leak** but can also be caused by allocating a single, very large object (e.g., a large bitmap). When an OOM error happens, the application crashes.
+
+#### Can you explain the difference between a Runnable and a Thread in Android?
+* **`Runnable`:** An interface that represents a task to be executed. It defines a single method, **`run()`**, which contains the code to be executed. A `Runnable` object doesn't create a new thread itself.
+* **`Thread`:** A class that represents a single thread of execution. It can be started to perform its task and manages the thread lifecycle.
+
+In short, a `Runnable` defines the "what," and a `Thread` defines the "how" of concurrency. It's generally preferred to use a `Runnable` with a **`ThreadPoolExecutor`** or a dedicated worker thread.
+
+### Working With Multimedia Content
+
+#### How do you handle bitmaps in Android as it takes too much memory?
+Bitmaps can consume significant memory. To handle them effectively:
+* **Load Scaled-Down Versions:** Instead of loading a full-resolution bitmap, load a smaller version that matches the size of the view it will be displayed in. Use **`BitmapFactory.Options`** with **`inSampleSize`**.
+* **Use Caching:** Implement a caching strategy like a **`LruCache`** (memory cache) and a disk cache.
+* **Recycle Bitmaps:** On older Android versions, call **`bitmap.recycle()`** when a bitmap is no longer needed. In newer versions, the garbage collector handles this more efficiently.
+* **Use Libraries:** Leverage image loading libraries like **Glide**, **Picasso**, or **Coil**, which handle scaling, caching, and background loading automatically.
+
+#### Tell about the Bitmap pool.
+A **Bitmap pool** is a mechanism for reusing bitmap objects to reduce memory allocation and garbage collection overhead. Instead of creating a new **`Bitmap`** object every time, a bitmap pool keeps a collection of previously used `Bitmap` objects. When a new bitmap is required, the pool is checked for a suitable, reusable bitmap. This significantly reduces memory churn. Image loading libraries like **Glide** and **Coil** implement bitmap pooling internally.
+
+### Data Saving & Persistence
+
+#### Jetpack DataStore Preferences
+**Jetpack DataStore Preferences** is a modern and robust replacement for **`SharedPreferences`**. It stores key-value pairs asynchronously and transactionally. Unlike `SharedPreferences`, `DataStore` is built on **Kotlin Coroutines** and **Flow**, making it safe to use on the main thread and ensuring data consistency.
+
+#### Persisting Data in an Android App
+* **File Storage:** Save data directly to internal or external storage.
+* **SharedPreferences/DataStore:** Store primitive data in key-value pairs.
+* **Databases (Room):** Use a relational database for structured data. **Room** is the recommended library.
+* **Network/Cloud Storage:** Store data on a remote server.
+
+#### What is ORM? How does it work?
+**ORM** stands for **Object-Relational Mapping**. It is a programming technique that maps objects in your application to tables in a relational database. ORM libraries like **Room** provide a high-level API to interact with the database using objects and methods instead of writing raw SQL queries.
+
+#### How would you preserve the Activity state during a screen rotation?
+A screen rotation causes an `Activity` to be destroyed and recreated. To preserve its state:
+* **`onSaveInstanceState()`:** The system calls this method before the `Activity` is destroyed. You can save small amounts of data into a `Bundle` here. When the `Activity` is recreated, the `Bundle` is passed to **`onCreate()`** where you can retrieve the data.
+* **ViewModels:** A **`ViewModel`** is a lifecycle-aware component that survives configuration changes. It's the **recommended way** to store and manage UI-related data, as it is not destroyed during rotation.
+
+#### What are different ways to store data in your Android app?
+* **Shared Preferences/DataStore:** For primitive key-value data.
+* **Internal Storage:** For storing private files accessible only by your app.
+* **External Storage:** For storing public files. **Scoped Storage** has changed how this works since Android 10.
+* **SQLite Database/Room:** For structured, relational data.
+* **Network Connection:** For storing data on a remote server.
+
+#### Explain Scoped Storage in Android.
+**Scoped Storage**, introduced in Android 10, is a privacy feature that changes how apps access files on external storage. Instead of having broad access, an app can only access:
+* **Its own app-specific directory.**
+* **Shared media collections** (like Photos, Videos, Downloads) via the **`MediaStore`** API.
+* **User-selected files** through the system file picker.
+
+Scoped Storage improves user privacy by limiting an app's ability to access files it didn't create.
+
+#### How to encrypt data in Android?
+* **Jetpack Security Library:** This library provides a straightforward API for encrypting files and **`SharedPreferences`**. It is the recommended approach for most use cases.
+* **Android Keystore System:** Securely stores cryptographic keys in a hardware-backed keystore, making them difficult to extract. You can use it to generate and manage keys for encryption.
+
+#### What is commit() and apply() in SharedPreferences?
+* **`commit()`:** Writes changes **synchronously**. It blocks the current thread until the write is complete. It should not be used on the main thread as it can cause an ANR.
+* **`apply()`:** Writes changes **asynchronously**. It returns immediately and performs the write in the background. This is the **preferred method** for most use cases as it is non-blocking.
+
+### Look and Feel
+
+#### What is a Spannable?
+A **`Spannable`** is an interface for text that can have markup objects ("spans") attached to it. These spans apply styling or behavior to specific parts of the text. Both the text and the spans are **mutable**.
+
+#### What is a SpannableString?
+A **`SpannableString`** is an implementation of `Spannable` where the text content is **immutable**, but the span information is **mutable**. You cannot change the characters, but you can add, remove, or modify styling spans. It's ideal for styling static text.
+
+#### What are the best practices for using text in Android?
+* **Use String Resources:** Always put text in **`strings.xml`** for localization and maintenance.
+* **Use `Spannable` for Styling:** For styling parts of text, use `SpannableString`.
+* **Avoid Hardcoding:** Never hardcode text directly in layouts or code.
+* **Handle Text Overflow:** Use `ellipsize` and `maxLines` to handle long text gracefully.
+* **Ensure Accessibility:** Add content descriptions for non-text elements.
+
+#### How to implement Dark mode in any application?
+1.  **Use a `DayNight` Theme:** Inherit your app's theme from a `DayNight` theme (e.g., `Theme.MaterialComponents.DayNight`).
+2.  **Use DayNight Qualifiers:** Create a `res/values-night` directory and define alternative `colors.xml` and `themes.xml` files for the dark theme.
+3.  **Use Theme Attributes:** Use theme attributes like **`?attr/colorPrimary`** and **`?attr/colorOnSurface`** in your layouts instead of hardcoded colors.
+4.  **Allow User Control:** Give users an option to switch themes by calling **`AppCompatDelegate.setDefaultNightMode()`**.
+
+### Views and ViewGroups
+
+#### What is a View?
+A `View` is the fundamental building block for all user interface components in an Android application. It's a simple rectangular box on the screen that draws something and can respond to user interaction. Examples include `Button`, `TextView`, and `ImageView`. The `android.view.View` class is the base class for all UI elements.
+
+#### What are ViewGroups?
+A `ViewGroup` is a special kind of `View` that acts as a container for other views and view groups. It's used to define the layout and arrangement of its child views. Think of it as an invisible container that organizes and groups UI elements. `ViewGroup` is the base class for all layout managers, such as `LinearLayout`, `FrameLayout`, and `ConstraintLayout`.
+
+The main difference between a `View` and a `ViewGroup` is that a `View` is a single UI component, while a `ViewGroup` is a container that organizes and manages a collection of views. A `ViewGroup` is a subclass of `View`, but with additional responsibilities.
+
+#### The View Tree
+The view tree (or view hierarchy) is a tree-like data structure that represents the layout of your UI. The root of the tree is the top-level ViewGroup, which contains child views or other view groups, and so on.
+
+You can optimize its depth by:
+
+-   Using a flat layout structure 🏗️, especially with `ConstraintLayout`, to avoid deep nesting.
+-   Using `<include>` and `<merge>` tags to reuse layout components and eliminate unnecessary ViewGroups.
+-   Using `ViewStub` for views that are not always needed, as they don't add to the view hierarchy until they are inflated.
+
+#### Optimizing Layouts
+Optimizing layouts in Android is crucial for app performance, as a poorly designed layout can cause the app to lag or stutter. Key strategies include:
+
+-   Using `ConstraintLayout` 🧘, which is highly efficient and can flatten the view hierarchy by creating complex UIs without nesting multiple ViewGroups.
+-   Minimizing the view hierarchy depth by avoiding unnecessary nesting of layouts. A flatter tree is faster to measure and draw.
+-   Using `<include>` and `<merge>` tags to reuse layouts and remove redundant ViewGroups. The `<merge>` tag is especially useful for reducing nesting when you're including one layout into another.
+-   Using `ViewStub` for views that are rarely used, as it's a lightweight placeholder that only inflates the view when you explicitly make it visible.
+
+#### View.GONE vs View.INVISIBLE
+The key difference between these two visibility states is how they affect the layout:
+
+-   **`View.INVISIBLE`**: The view is hidden, but it still takes up space in the layout. Other views will not move to fill its space.
+-   **`View.GONE`**: The view is hidden and does not take up any space in the layout. The system treats it as if it's not in the view hierarchy, and other views will collapse to fill its space.
+
+**Example:**
+Imagine a `LinearLayout` with two buttons. If you set the first button's visibility to `View.INVISIBLE`, the second button will remain in its original position, with an empty space where the first button was. If you set the first button's visibility to `View.GONE`, the second button will slide over and take the first button's place.
+
+#### Creating a Custom View
+Yes, you can create a custom view by extending an existing `View` class (like `TextView` or `Button`) or the base `View` class itself. You must override the following methods:
+
+-   **Constructors**: To allow the view to be instantiated from code or XML.
+-   **`onMeasure()`**: To define the size of your custom view.
+-   **`onDraw()`**: To draw the view's content using a `Canvas` object.
+-   **`onTouchEvent()`**: To handle user interactions.
+
+This allows you to create unique UI components with custom drawing and behavior.
+
+#### RelativeLayout vs LinearLayout
+| Feature | LinearLayout | RelativeLayout |
+| :--- | :--- | :--- |
+| **Arrangement** | Arranges views in a single row or column (either horizontal or vertical). | Arranges views based on their position relative to other views or the parent container. |
+| **Simplicity** | Simpler and generally more performant for simple, linear arrangements. | More complex but offers greater flexibility in positioning views. |
+| **Nesting** | Can lead to deep nesting for complex UIs, which hurts performance. | Can often flatten the view hierarchy by avoiding nesting. |
+| **Ideal Use Case** | Simple lists, forms, or stacks of views. | Overlapping views or complex layouts where a view's position depends on another's. |
+
+#### ConstraintLayout Optimization
+`ConstraintLayout` is a powerful and flexible `ViewGroup` that is a strong choice for layout optimization because it can flatten the view hierarchy. It allows you to build complex and responsive UIs without the need for nested layouts. By using constraints to define the position of each view relative to other views or the parent, you can avoid the performance penalties of deep view trees. It also offers features like `Guidelines` and `Barriers` for easier alignment and grouping of views.
+
+#### What is a Canvas?
+A `Canvas` is a drawing surface in Android. It provides a set of methods for drawing on a bitmap or a view. When you override the `onDraw()` method of a custom view, the `Canvas` object is passed as an argument. You use the `Canvas` object's methods (e.g., `drawRect()`, `drawText()`, `drawBitmap()`) along with a `Paint` object to define what gets drawn on the screen.
+
+#### What is a SurfaceView?
+A `SurfaceView` is a special type of `View` that provides a dedicated drawing surface embedded in the view hierarchy. Unlike a regular `View` where all drawing happens on the main UI thread, a `SurfaceView` has its own separate thread for drawing. This makes it ideal for performance-intensive tasks like games, camera previews, or video playback, as the drawing operations won't block the main UI thread.
+
+### Displaying Lists of Content
+
+#### ListView vs RecyclerView
+The `RecyclerView` is the modern and highly optimized successor to the `ListView`. The key differences are:
+
+-   **Recycling**: `RecyclerView` reuses view holders, which dramatically improves performance by avoiding expensive `findViewById` calls and object creation during scrolling. `ListView` only recycles the views themselves.
+-   **Layout Management**: `RecyclerView` decouples the layout from the list by using a `LayoutManager`, giving you more control over how items are positioned. `ListView` only supports a vertical list.
+-   **Animations**: `RecyclerView` has built-in support for item animations when items are added, removed, or moved.
+-   **Flexibility**: `RecyclerView` is a more flexible component for displaying various types of lists, grids, and staggered layouts.
+
+#### How RecyclerView Works
+`RecyclerView` improves performance over `ListView` by using a recycling pattern. Instead of creating a new view for every item in a large dataset, it creates a limited number of `ViewHolder` objects. When an item scrolls off the screen, its `ViewHolder` is returned to a pool. When a new item comes on-screen, a `ViewHolder` is pulled from the pool, re-bound with the new data, and displayed. This avoids the time-consuming process of inflating new layouts for every item.
+
+#### RecyclerView Components
+A `RecyclerView` has four essential components:
+
+-   **`RecyclerView`**: The container view itself that displays the list.
+-   **`RecyclerView.Adapter`**: Manages the data and creates/binds the `ViewHolders`.
+-   **`RecyclerView.ViewHolder`**: A wrapper for a single list item view, holding references to its sub-views.
+-   **`RecyclerView.LayoutManager`**: Defines how the items are laid out (e.g., as a vertical list or a grid).
+
+#### RecyclerView.Adapter and RecyclerView.ViewHolder
+-   **`RecyclerView.Adapter`**: Acts as the bridge between your data and the `RecyclerView`. It's responsible for:
+    -   `onCreateViewHolder()`: Creating a new `ViewHolder` instance by inflating the item layout.
+    -   `onBindViewHolder()`: Binding the data from your dataset to the views inside a `ViewHolder`.
+    -   `getItemCount()`: Reporting the total number of items in the dataset.
+-   **`RecyclerView.ViewHolder`**: A container for the view of a single list item. It holds references to the views within that item's layout. This is what allows for the efficient recycling of views, as it prevents repeated calls to `findViewById()`.
+
+#### LayoutManager in RecyclerView
+A `LayoutManager` is an abstract class that determines how items are arranged in the `RecyclerView`. It's a key part of `RecyclerView`'s flexibility. The three most common implementations are:
+
+-   **`LinearLayoutManager`**: For a vertical or horizontal scrolling list.
+-   **`GridLayoutManager`**: For a grid layout with a specified number of columns or rows.
+-   **`StaggeredGridLayoutManager`**: For a grid where items have varying sizes, creating a staggered effect.
+
+#### RecyclerView Optimization
+Key ways to improve `RecyclerView` scrolling performance include:
+
+-   Using `DiffUtil` to efficiently update the adapter when the data changes.
+-   Calling `adapter.setHasStableIds(true)` if your data items have stable, unique IDs. This helps `RecyclerView` track items and prevent unnecessary re-binding.
+-   Avoiding complex layouts and expensive drawing operations in the list items.
+-   Ensuring that `onBindViewHolder()` is as lightweight as possible.
+-   Using `RecyclerView.setHasFixedSize(true)` if the item size doesn't change.
+
+#### Optimizing Nested RecyclerView
+Nested `RecyclerViews` can cause performance issues. To optimize them:
+
+-   Set `nestedScrollingEnabled` to `false` for the inner `RecyclerView` to prevent it from handling its own scrolling, letting the parent handle it.
+-   Use a single, shared `RecyclerView.RecycledViewPool` for the inner adapters. This allows the inner lists to share `ViewHolders`, reducing memory overhead.
+
+#### Handling Multiple View Types
+You can handle multiple view types in a `RecyclerView` by overriding two methods in your adapter:
+
+1.  **`getItemViewType(position: Int)`**: This method returns an integer representing the view type for an item at a specific position. You can use a condition (e.g., checking a data field) to return different integers for different view types.
+2.  **`onCreateViewHolder(parent: ViewGroup, viewType: Int)`**: This method receives the `viewType` integer. You can use a `when` statement to inflate the correct layout and create the appropriate `ViewHolder` for each view type.
+
+#### DiffUtil
+`DiffUtil` is a utility class that calculates the difference between two lists and outputs a list of update operations that convert the old list into the new one. This is used to update a `RecyclerView`'s adapter. Instead of calling `notifyDataSetChanged()` (which is inefficient and re-binds all visible items), `DiffUtil` allows you to perform highly targeted and efficient updates, like adding, removing, or changing a single item. This provides smoother animations and better performance.
+
+#### RecyclerView.setHasFixedSize(true)
+Calling `recyclerView.setHasFixedSize(true)` is an optimization that tells the `RecyclerView` that its size will not change. This allows it to bypass a calculation step during measurement, making the process faster. You should only use this if the `RecyclerView`'s height and width are guaranteed to be the same regardless of its content. For example, if it's set to `match_parent` in both dimensions.
+
+#### Updating a Specific Item
+You can update a specific item in a `RecyclerView` by calling `adapter.notifyItemChanged(position)`. This is more efficient than `notifyDataSetChanged()` because it only re-binds the single item at the specified position. For an even more optimized approach, use `DiffUtil`, which will handle all the necessary insertions, removals, and changes for you.
+
+#### SnapHelper
+A `SnapHelper` is a utility class that provides snapping behavior to `RecyclerView` items, meaning that when the user scrolls, the `RecyclerView` will automatically stop with an item perfectly aligned to a specific point (e.g., the center of the screen). It's an abstract class, with common implementations being `LinearSnapHelper` (for lists) and `PagerSnapHelper` (for a `ViewPager`-like snapping behavior). It's great for creating carousels or image galleries.
+
+### Dialogs and Toasts
+- **Dialog**: A small, pop-up window that prompts the user for a response or provides information. It appears on top of the current Activity and pauses it until the dialog is dismissed. It's used for critical information or to get user input, like confirming an action.
+- **Toast**: A small, temporary pop-up message that provides simple feedback to the user about an operation. It appears at the bottom of the screen, fades away automatically, and doesn't require user interaction. Toasts are for non-critical information that doesn't need to block the user.
+
+| Feature | `Dialog` | `DialogFragment` |
+| :--- | :--- | :--- |
+| **Class** | An old-style class (`android.app.Dialog`) for creating dialogs. | A subclass of `Fragment` that manages a dialog. |
+| **Lifecycle** | Has its own lifecycle, which is not tied to the Activity's lifecycle. This can cause issues like a `BadTokenException` if the Activity is destroyed. | Manages the dialog within the Fragment's lifecycle. It is the **recommended way** to create and manage dialogs because it handles state changes (like screen rotation) gracefully. |
+| **State** | Prone to lifecycle-related issues and can leak memory. | Manages its own state, making it more robust and reliable. |
+
+### Intents and Broadcasting
+An **Intent** is a messaging object used to request an action from another app component. It's the primary mechanism for inter-component communication in Android. You can use it to start an Activity, a Service, or send a broadcast.
+
+- An **Implicit Intent** doesn't name a specific component. Instead, it declares a general action to be performed (e.g., "view a webpage" or "take a photo"). The Android system finds a suitable component from all the installed apps to handle the action.
+
+  **Example:**
+  ```kotlin
+  val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"))
+  startActivity(intent)
+  ```
+
+- An **Explicit Intent** specifies the exact component to start by name. It's typically used to start a component within your own app.
+
+  **Example:**
+  ```kotlin
+  val intent = Intent(this, SecondActivity::class.java)
+  startActivity(intent)
+  ```
+
+A **BroadcastReceiver** is a component that listens for and responds to broadcast messages from other apps or the system. It doesn't have a UI and is typically used to react to events like a low battery, a change in connectivity, or a custom broadcast sent by your own app.
+
+Broadcasts and Intents work together as a message-passing system. A component creates an Intent and wraps it in a broadcast. The system then sends this broadcast to all registered BroadcastReceivers. Each BroadcastReceiver that has declared a matching `IntentFilter` can receive the broadcast and perform an action in response.
+
+**Example:**
+```kotlin
+// Sending a broadcast
+val intent = Intent("com.example.MY_CUSTOM_ACTION")
+sendBroadcast(intent)
+
+// A BroadcastReceiver receiving it
+class MyReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context?, intent: Intent?) {
+        if (intent?.action == "com.example.MY_CUSTOM_ACTION") {
+            // Do something in response
+        }
+    }
+}
+```
+
+A **PendingIntent** is a token that gives another application or component permission to execute an Intent on your application's behalf at a later time. It's often used for things like notifications, alarms, or app widgets, where an event needs to be triggered even if your app's process is not running. It acts as a wrapper around an Intent.
+
+There are two main types of broadcasts:
+1. **Normal Broadcasts**: These are asynchronous and can be received by any registered receiver. The system delivers them in an undefined order, and they cannot be cancelled.
+2. **Ordered Broadcasts**: These are delivered to receivers one at a time, in a priority order. A receiver can modify the data in the broadcast or even abort it entirely, preventing it from being passed to lower-priority receivers.
+
+### Services
+A **Service** is an application component that can perform long-running operations in the background, without a user interface. Services are used for tasks like playing music, downloading files, or fetching data from the network. They are not tied to the lifecycle of an Activity.
+
+The **Service Lifecycle** is a series of callback methods that track the state of a Service:
+- `onCreate()`: Called when the service is first created.
+- `onStartCommand()`: Called every time a client explicitly starts the service. This is where you put the service's main task.
+- `onBind()`: Called when another component binds to the service.
+- `onDestroy()`: Called when the service is no longer used and is being destroyed.
+
+A Service runs on the main thread of the application by default. This is a common misconception. If you perform a long-running operation within a service, it will block the main thread. To avoid this, you must explicitly manage background operations using a separate thread, a Coroutine, or a WorkManager.
+
+| Feature | `Service` | `IntentService` (Deprecated) |
+| :--- | :--- | :--- |
+| **Thread** | Runs on the main thread by default. You must handle threading yourself. | Creates a separate worker thread to handle all incoming intents. All requests are handled in a queue. |
+| **Concurrency** | Can handle multiple requests concurrently if you manage threads. | Processes one intent at a time on its worker thread. |
+| **Lifecycle** | Must be explicitly stopped (e.g., with `stopSelf()`). | Automatically stops itself after all intents in its queue have been processed. |
+
+A **Foreground Service** is a Service that is considered by the system to be an active, user-facing process. It must display a notification to the user while it is running. This makes the service less likely to be killed by the system in low-memory situations.
+
+A **JobScheduler** is an Android API that allows you to schedule background tasks in a battery-efficient way. It batches jobs from different applications to run at an opportune time, based on conditions like network availability or charging status.
+
+**WorkManager** guarantees task execution by leveraging various APIs like `JobScheduler`. It manages a persistent queue of work and stores it in a local database. This means that even if the app process is killed or the device is rebooted, the work will be rescheduled and executed. It's the **recommended** solution for deferrable background work that needs to be guaranteed to run.
+
+### Inter-process Communication
+Two distinct Android apps can interact using:
+- **Intents**: To start another app's activity or service.
+- **Broadcasts**: For sending and receiving system-wide or custom messages.
+- **Content Providers**: For sharing data between apps.
+- **Bounded Services**: Using **AIDL** (Android Interface Definition Language) to allow a component from one app to bind to a service in another app and make remote procedure calls.
+
+It is possible to run an Android app in multiple processes by using the `android:process` attribute in the `AndroidManifest.xml`. This is often used for isolating a long-running or memory-intensive service in its own process.
+
+**AIDL (Android Interface Definition Language)** is a tool that allows you to define the programming interface that both the client and service agree upon for inter-process communication (IPC). It is used for creating a bounded service that can be accessed by other applications.
+
+For background processing in Android, you can use:
+- **WorkManager**: For tasks that need to be guaranteed to run. **Recommended for deferrable work.**
+- **Coroutines**: For lightweight, asynchronous tasks.
+- **Services**: For long-running background tasks.
+
+A **ContentProvider** is a component that manages access to a structured set of data. It provides a standard interface for sharing data between applications, typically acting as a wrapper around a database to allow other apps to query, insert, update, or delete data in a secure way.
+
+### 📱 Android Development
+
+### Android App Lag
+An Android app lags primarily due to blocking the main thread. The main thread (also called the UI thread) is responsible for handling user interactions, drawing the UI, and updating the screen. If this thread is blocked by a long-running operation, such as a complex calculation, a network request, or a database query, the app becomes unresponsive and appears to freeze or "lag."
+
+**Example:**
+If you fetch data from a server on the main thread, the app will freeze until the network request completes. This can be solved by moving the operation to a background thread using technologies like Coroutines or RxJava.
+
+### Context in Android
+Context is a handle to the Android system's resources and services. It provides access to application-specific resources, themes, and configuration. Think of it as a bridge between your application components and the Android system. It's essential for tasks like:
+
+- Accessing resources (e.g., strings, layouts, drawables).
+- Creating views and layouts.
+- Starting new activities or services.
+- Getting system services like a `LayoutInflater` or `WindowManager`.
+
+**Example:**
+When you need to get a string from your resources, you use `context.getString(R.string.my_string)`.
+
+### Android Application Components
+Android has four main application components, which are the building blocks of any app:
+
+1.  **Activities:** Provide a screen with a UI that the user can interact with. Each activity represents a single screen with a specific task (e.g., a login screen or a settings screen).
+2.  **Services:** Run in the background to perform long-running operations without a UI. Examples include playing music in the background or downloading a file.
+3.  **Broadcast Receivers:** Listen for system-wide broadcasts or intents (e.g., low battery, incoming text message, or a photo being taken) and react to them.
+4.  **Content Providers:** Manage a shared set of application data. They provide a standardized interface for sharing data between different applications.
+
+### Android Project Structure
+A typical Android project has a modular structure organized for clarity and build efficiency. The key directories are:
+
+-   `app/src/main/java`: Contains your Kotlin or Java source code.
+-   `app/src/main/res`: Contains all application resources like layouts (`layout/`), images (`drawable/`), string values (`values/`), and more.
+-   `app/src/main/AndroidManifest.xml`: The manifest file, which describes the essential information about your app to the Android system.
+-   `app/build.gradle`: The Gradle build script for your app module, where you define dependencies, build configurations, and other project settings.
+
+### AndroidManifest.xml
+The `AndroidManifest.xml` file is a crucial part of every Android app. It's the "ID card" for your application, providing the Android system with vital information. It declares:
+
+-   The application's package name.
+-   Its components (activities, services, etc.).
+-   Required hardware features.
+-   Permissions needed to run the app (e.g., `INTERNET` or `CAMERA`).
+-   The application's icon and label.
+
+Without a manifest, the system can't run your app's components.
+
+### Application Class
+The `Application` class is the base class for maintaining global application state. It's instantiated before any other component (like an Activity) when your application's process is started. It's a great place to perform one-time initialization for your entire application, like setting up a database or a dependency injection container. However, because it's a singleton, it should be used judiciously to avoid creating a God object. You can create your own custom `Application` class by extending `android.app.Application` and declaring it in the `AndroidManifest.xml`.
+
+### Activity and its Lifecycle
+An `Activity` represents a single screen in your app. It has a well-defined lifecycle managed by the Android system. The lifecycle consists of a series of callback methods that are called as the activity transitions through different states. The key states and their callbacks are:
+
+-   `onCreate()`: The activity is being created. You set up the UI here.
+-   `onStart()`: The activity is about to become visible.
+-   `onResume()`: The activity is in the foreground and can be interacted with.
+-   `onPause()`: Another activity is coming into the foreground, but this one is still partially visible.
+-   `onStop()`: The activity is no longer visible to the user.
+-   `onDestroy()`: The activity is being destroyed.
+
+### onCreate() vs onStart()
+| Callback | `onCreate()` | `onStart()` |
+| :--- | :--- | :--- |
+| **When Called** | When the activity is first created. It's called only once during the entire lifecycle of an activity instance. | When the activity is about to become visible to the user. It's called after `onCreate()` and every time the activity is brought to the foreground. |
+| **Use Case** | Mandatory for initial setup, like calling `setContentView()`, initializing views, and binding data. | For tasks that need to run whenever the activity becomes visible, like starting animations or registering listeners. |
+
+### onSaveInstanceState() and onRestoreInstanceState()
+-   **`onSaveInstanceState()`**: This callback is invoked by the system to allow an activity to save its dynamic state (like the text in an `EditText` or the scroll position of a `RecyclerView`) as a `Bundle` object. This happens when the activity is killed by the system to reclaim resources (e.g., during a configuration change or low memory conditions).
+-   **`onRestoreInstanceState()`**: This callback is invoked after `onStart()` if the activity is being recreated after being killed by the system. The `Bundle` saved in `onSaveInstanceState()` is passed to this method, allowing you to restore the activity's state.
+
+**Example:**
+```kotlin
+override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putString("key_text", myEditText.text.toString())
+}
+
+override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+    super.onRestoreInstanceState(savedInstanceState)
+    val myText = savedInstanceState.getString("key_text")
+    myEditText.setText(myText)
+}
+
+### 📱 Android Development
+
+### Android App Lag
+An Android app lags primarily due to blocking the main thread. The main thread (also called the UI thread) is responsible for handling user interactions, drawing the UI, and updating the screen. If this thread is blocked by a long-running operation, such as a complex calculation, a network request, or a database query, the app becomes unresponsive and appears to freeze or "lag."
+
+**Example:**
+If you fetch data from a server on the main thread, the app will freeze until the network request completes. This can be solved by moving the operation to a background thread using technologies like Coroutines or RxJava.
+
+### Context in Android
+Context is a handle to the Android system's resources and services. It provides access to application-specific resources, themes, and configuration. Think of it as a bridge between your application components and the Android system. It's essential for tasks like:
+
+- Accessing resources (e.g., strings, layouts, drawables).
+- Creating views and layouts.
+- Starting new activities or services.
+- Getting system services like a `LayoutInflater` or `WindowManager`.
+
+**Example:**
+When you need to get a string from your resources, you use `context.getString(R.string.my_string)`.
+
+### Android Application Components
+Android has four main application components, which are the building blocks of any app:
+
+1.  **Activities:** Provide a screen with a UI that the user can interact with. Each activity represents a single screen with a specific task (e.g., a login screen or a settings screen).
+2.  **Services:** Run in the background to perform long-running operations without a UI. Examples include playing music in the background or downloading a file.
+3.  **Broadcast Receivers:** Listen for system-wide broadcasts or intents (e.g., low battery, incoming text message, or a photo being taken) and react to them.
+4.  **Content Providers:** Manage a shared set of application data. They provide a standardized interface for sharing data between different applications.
+
+### Android Project Structure
+A typical Android project has a modular structure organized for clarity and build efficiency. The key directories are:
+
+-   `app/src/main/java`: Contains your Kotlin or Java source code.
+-   `app/src/main/res`: Contains all application resources like layouts (`layout/`), images (`drawable/`), string values (`values/`), and more.
+-   `app/src/main/AndroidManifest.xml`: The manifest file, which describes the essential information about your app to the Android system.
+-   `app/build.gradle`: The Gradle build script for your app module, where you define dependencies, build configurations, and other project settings.
+
+### AndroidManifest.xml
+The `AndroidManifest.xml` file is a crucial part of every Android app. It's the "ID card" for your application, providing the Android system with vital information. It declares:
+
+-   The application's package name.
+-   Its components (activities, services, etc.).
+-   Required hardware features.
+-   Permissions needed to run the app (e.g., `INTERNET` or `CAMERA`).
+-   The application's icon and label.
+
+Without a manifest, the system can't run your app's components.
+
+### Application Class
+The `Application` class is the base class for maintaining global application state. It's instantiated before any other component (like an Activity) when your application's process is started. It's a great place to perform one-time initialization for your entire application, like setting up a database or a dependency injection container. However, because it's a singleton, it should be used judiciously to avoid creating a God object. You can create your own custom `Application` class by extending `android.app.Application` and declaring it in the `AndroidManifest.xml`.
+
+### Activity and its Lifecycle
+An `Activity` represents a single screen in your app. It has a well-defined lifecycle managed by the Android system. The lifecycle consists of a series of callback methods that are called as the activity transitions through different states. The key states and their callbacks are:
+
+-   `onCreate()`: The activity is being created. You set up the UI here.
+-   `onStart()`: The activity is about to become visible.
+-   `onResume()`: The activity is in the foreground and can be interacted with.
+-   `onPause()`: Another activity is coming into the foreground, but this one is still partially visible.
+-   `onStop()`: The activity is no longer visible to the user.
+-   `onDestroy()`: The activity is being destroyed.
+
+### onCreate() vs onStart()
+| Callback | `onCreate()` | `onStart()` |
+| :--- | :--- | :--- |
+| **When Called** | When the activity is first created. It's called only once during the entire lifecycle of an activity instance. | When the activity is about to become visible to the user. It's called after `onCreate()` and every time the activity is brought to the foreground. |
+| **Use Case** | Mandatory for initial setup, like calling `setContentView()`, initializing views, and binding data. | For tasks that need to run whenever the activity becomes visible, like starting animations or registering listeners. |
+
+### onSaveInstanceState() and onRestoreInstanceState()
+-   **`onSaveInstanceState()`**: This callback is invoked by the system to allow an activity to save its dynamic state (like the text in an `EditText` or the scroll position of a `RecyclerView`) as a `Bundle` object. This happens when the activity is killed by the system to reclaim resources (e.g., during a configuration change or low memory conditions).
+-   **`onRestoreInstanceState()`**: This callback is invoked after `onStart()` if the activity is being recreated after being killed by the system. The `Bundle` saved in `onSaveInstanceState()` is passed to this method, allowing you to restore the activity's state.
+
+**Example:**
+```kotlin
+override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putString("key_text", myEditText.text.toString())
+}
+
+override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+    super.onRestoreInstanceState(savedInstanceState)
+    val myText = savedInstanceState.getString("key_text")
+    myEditText.setText(myText)
+}
+```
+
+### Fragment and its Lifecycle
+A `Fragment` represents a reusable portion of a user interface within an `Activity`. A fragment's lifecycle is closely tied to its host activity's lifecycle, but it has its own set of callbacks. A fragment can have different states, such as added, attached, and detached. The main lifecycle methods include:
+
+-   `onAttach()`: The fragment has been attached to its host activity.
+-   `onCreate()`: The fragment is being created.
+-   `onCreateView()`: The fragment's view is being created and inflated.
+-   `onViewCreated()`: The view has been created, and you can now access views.
+-   `onStart()`: The fragment is now visible.
+-   `onResume()`: The fragment is in the foreground.
+-   `onPause()`: The fragment is no longer in the foreground.
+-   `onStop()`: The fragment is no longer visible.
+-   `onDestroyView()`: The fragment's view is being destroyed.
+-   `onDestroy()`: The fragment instance is being destroyed.
+-   `onDetach()`: The fragment is being detached from its host activity.
+
+### Fragment vs Activity
+| Feature | Fragment | Activity |
+| :--- | :--- | :--- |
+| **Component Type** | A modular part of an Activity. | A standalone component that represents a single screen. |
+| **Lifecycle** | Dependent on the host Activity's lifecycle. | Independent lifecycle managed by the Android system. |
+| **View Hierarchy** | Has its own view hierarchy. | Has its own view hierarchy. |
+| **Communication**| Communicates with other fragments or the host Activity. | Communicates with other activities via `Intent`. |
+| **Reusability** | Highly reusable across multiple activities. | Not easily reusable; typically represents a unique screen. |
+
+The relationship between a fragment and an activity is that a fragment must always be hosted within an activity. A single activity can host multiple fragments, and a fragment can be reused across different activities.
+
+### When to Use a Fragment?
+You should use a `Fragment` instead of an `Activity` in the following scenarios:
+
+-   When you have UI components that need to be reused across different activities.
+-   When you need to support multiple screen sizes and orientations (e.g., showing a list and details side-by-side on a tablet but separately on a phone).
+-   When you are implementing a `ViewPager` or `BottomNavigationView` where multiple screens exist within a single activity.
+
+**Example:** A fragment for a user profile can be used on a phone as a full-screen activity and on a tablet as a side panel next to a list of users.
+
+### FragmentPagerAdapter vs FragmentStatePagerAdapter
+The difference lies in how they manage fragments:
+
+-   **`FragmentPagerAdapter`**: Keeps all fragments in memory. It only destroys the fragment's views when they are off-screen, but the fragment instance remains. This is more memory-intensive but faster for a small number of pages because the fragment doesn't need to be recreated.
+-   **`FragmentStatePagerAdapter`**: Destroys the entire fragment instance (except for its saved state) when it's not visible to the user. This is more memory-efficient and is recommended for a large number of pages where not all pages will be in memory at once.
+
+### add() vs replace() Fragment Transactions
+-   **`add()`**: Adds a new fragment to the container. If another fragment is already there, it will be placed on top of the existing fragment. The previous fragment remains in the view hierarchy, but it's not visible. This is useful when you want to show a transparent fragment on top of another.
+-   **`replace()`**: Removes any existing fragment from the container and replaces it with a new one. The old fragment's view is destroyed. This is the more common method for navigating between different fragments.
+
+### Purpose of addToBackStack()
+When you perform a fragment transaction, like `replace()`, the old fragment is removed. By calling `transaction.addToBackStack(null)`, you save that transaction to the activity's back stack. This means that when the user presses the back button, the transaction is reversed, and the previous fragment is brought back. Without `addToBackStack()`, pressing the back button would simply close the host activity.
+
+### Communicating Between Two Fragments
+The recommended way to communicate between fragments is through their shared host activity or view model.
+
+1.  **Shared Host Activity**: A fragment can define an interface that the host activity must implement. The fragment calls a method on this interface, and the activity then passes the data to the other fragment.
+2.  **Shared ViewModel**: This is the modern, recommended approach. The two fragments share a `ViewModel` that lives as long as the host activity. One fragment updates a live data object in the `ViewModel`, and the other fragment observes that data and reacts to changes.
+
+### Retained Fragment
+A retained fragment is a fragment that survives configuration changes (like a screen rotation). By default, a fragment is destroyed and recreated along with its host activity. However, if you call `setRetainInstance(true)` on a fragment, its instance will be kept and reattached to the new activity instance after the configuration change. This is useful for retaining state or a long-running background task, as it prevents the task from being cancelled and restarted.
+
+**Example:** A fragment for a network download task could be retained to prevent the download from restarting every time the user rotates the screen.
+
+### Bundle in Android
+A `Bundle` is a key-value data structure used to pass data between Android components. It's a key part of saving and restoring the UI state. It is optimized to work with small amounts of data. `Bundle` can hold primitive types, Strings, and `Serializable` or `Parcelable` objects. The `Bundle` class is used in `Intents` for passing data and in lifecycle callbacks like `onSaveInstanceState()`.
+
+**Example:**
+```kotlin
+val bundle = Bundle()
+bundle.putString("user_name", "Alice")
+bundle.putInt("user_age", 30)
+
+val myIntent = Intent(this, MyActivity::class.java)
+myIntent.putExtras(bundle)
+startActivity(myIntent)
+```
+
+### why is it recommended to use only the default constructor to create a fragment
+It's recommended to use a default (no-argument) constructor for a `Fragment` because the Android system can destroy and recreate fragments at any time (e.g., during a configuration change like a screen rotation). When the system recreates the fragment, it uses the default constructor. If you have a custom constructor with arguments, the system won't know how to recreate the fragment, which can lead to crashes. To pass data to a fragment, you should use the arguments `Bundle` and the `newInstance()` static factory method pattern.
+
+**Example (Incorrect):**
+```kotlin
+class MyFragment(val someData: String) : Fragment() // Don't do this!
+```
+
+**Example (Correct):**
+```kotlin
+class MyFragment : Fragment() {
+    companion object {
+        fun newInstance(someData: String): MyFragment {
+            val args = Bundle()
+            args.putString("key_data", someData)
+            val fragment = MyFragment()
+            fragment.arguments = args
+            return fragment
+        }
+    }
+}
+```
+
+### why do we need to call setcontentview in oncreate of activity class
+You need to call `setContentView()` in the `onCreate()` method because this is the first and only time you can inflate the activity's layout from XML and bind it to the activity. The `onCreate()` method is where the initial setup of the activity takes place. It is a mandatory step to display a UI on the screen.
+
+**Example:**
+```kotlin
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main) // This must be called here
+    // Now you can find views using findViewById
+    val button = findViewById<Button>(R.id.my_button)
+}
+```
+
+### when only ondestroy is called for an activity without onpause and onstop
+An `onDestroy()` callback is called without `onPause()` and `onStop()` only when the `Activity` instance is an orphan and the system has to reclaim the memory from the process that contains the `Activity` instance. The `onPause()` and `onStop()` methods will not be called when `finish()` is called from within the `onCreate()` method of the `Activity`. This happens, for example, if a condition inside `onCreate()` fails, and you immediately call `finish()` to close the activity.
+
+### launchMode in Android
+`launchMode` is an attribute defined in the `AndroidManifest.xml` for an activity that specifies how the activity should be launched into its task stack. There are four launch modes:
+
+-   **`standard`** (default): Creates a new instance of the activity every time it's launched.
+-   **`singleTop`**: If an instance of the activity already exists at the top of the stack, a new instance is not created; instead, the existing one receives the `onNewIntent()` call.
+-   **`singleTask`**: The activity is launched as the root of a new task. If an instance already exists in another task, the system brings that task to the foreground and calls `onNewIntent()`.
+-   **`singleInstance`**: Similar to `singleTask`, but the activity is the sole member of its task. No other activities can be launched into the same task.
+
 
 ---
 
