@@ -141,12 +141,6 @@
 - [RecyclerView.setHasFixedSize(true)](#recyclerviewsethasfixedsizetrue)
 - [Updating a Specific Item](#updating-a-specific-item)
 - [SnapHelper](#snaphelper)
-- #### Look and Feel
-- [Dialogs and Toasts](#dialogs-and-toasts)
-- [What is a Spannable?](#what-is-a-spannable)
-- [What is a SpannableString?](#what-is-a-spannablestring)
-- [Best practices for using text](#best-practices-for-using-text-in-android)
-- [Implementing Dark mode](#how-to-implement-dark-mode-in-any-application)
 - #### Component Communication & Navigation
 - [Intents and Broadcasting](#intents-and-broadcasting)
 - [launchMode in Android](#launchmode-in-android)
@@ -169,20 +163,220 @@
 - [ORM (Object-Relational Mapping)](#what-is-orm-how-does-it-work)
 - [Scoped Storage](#explain-scoped-storage-in-android)
 - [Encrypting Data](#how-to-encrypt-data-in-android)
-- #### Memory Management
-- [Garbage Collection](#garbage-collection)
-- [Memory Leak vs. Out of Memory (OOM) Error](#memory-leak-vs-out-of-memoryoom-error)
-- [Force Garbage Collection](#is-it-possible-to-force-garbage-collection-in-android)
-- #### Working With Multimedia Content
-- [Handling Bitmaps](#how-do-you-handle-bitmaps-in-android-as-it-takes-too-much-memory)
-- [Bitmap Pool](#tell-about-the-bitmap-pool)
-- #### Miscellaneous
-- [ViewModel](#what-is-a-viewmodel-and-how-is-it-useful)
+- #### Performance & Optimizations
+- [Memory Optimizations](#memory-optimizations)
+- [Improve Android App Performance](#improve-android-app-performance)
+- [onTrimMemory() method](#what-is-the-ontrimmemory-method)
+- [Identifying and fixing OutOfMemory issues](#how-to-identify-and-fix-outofmemory-issues)
+- [Finding memory leaks](#how-do-you-find-memory-leaks-in-android-applications)
+- [Battery Life Optimizations](#battery-life-optimizations)
+- [Adaptive Battery using ML](#how-android-implements-adaptive-battery-using-ml)
+- [Reducing battery usage](#how-to-reduce-battery-usage-in-an-android-application)
+- [Doze and App Standby](#what-is-doze-what-about-app-standby)
+- [What is overdraw?](#what-is-overdraw)
+- #### Supporting Different Screens
+- [Supporting Different Screen Sizes](#supporting-different-screen-sizes)
+- [Supporting different resolutions](#how-do-you-support-different-types-of-resolutions)
+- #### Permissions
+- [Different protection levels](#what-are-the-different-protection-levels-in-permission)
+- #### Native Programming
+- [NDK and its use](#what-is-the-ndk-and-why-is-it-useful)
+- [What is renderscript?](#what-is-renderscript)
+- #### Android System Internals
+- [Android Runtime (ART)](#what-is-android-runtime)
+- [Dalvik, ART, JIT, and AOT](#dalvik-art-jit-and-aot-in-android)
+- [Dalvik vs ART](#what-are-the-differences-between-dalvik-and-art)
+- [Baseline Profiles](#baseline-profiles)
+- [What is DEX?](#what-is-dex)
 - [Multidex in Android](#what-is-multidex-in-android)
-- [Android Push Notification Flow (FCM)](#android-push-notification-flow-using-fcm)
+- [Manually calling Garbage Collector](#can-you-manually-call-the-garbage-collector)
+- [App Starts: Hot, Warm & Cold](#android-app-starts-hot-warm--cold)
+- #### Android Jetpack
+- [What is Android Jetpack?](#what-is-android-jetpack-and-why-to-use-this)
+- [What is a ViewModel?](#what-is-a-viewmodel-and-how-is-it-useful)
+- [SharedViewModel in Android](#sharedviewmodel-in-android)
+- [Android Architecture Components](#what-are-android-architecture-components)
+- [StateFlow vs LiveData](#stateflow-vs-livedata-in-android-development)
+- [What is LiveData?](#what-is-livedata-in-android)
+- [LiveData vs ObservableField](#how-is-livedata-different-from-observablefield)
+- [setValue vs postValue in LiveData](#what-is-the-difference-between-setvalue-and-postvalue-in-livedata)
+- [Sharing ViewModel between Fragments](#how-do-you-share-viewmodel-between-fragments-in-android)
+- [WorkManager and its use cases](#explain-workmanager-and-its-use-cases)
+- [WorkManager minimum repeat interval](#minimum-repeat-interval-allowed-when-scheduling-a-periodicworkrequest-using-workmanager)
+- [How WorkManager Guarantees Execution](#how-does-workmanager-guarantee-task-execution)
+- [How ViewModel works internally](#how-does-viewmodel-work-internally)
+- #### Miscellaneous
+- [Push Notification Flow (FCM)](#android-push-notification-flow-using-fcm)
 
 ### 🌍 Cross-Platform
 - [Kotlin Multiplatform](#kotlin-multiplatform)
+
+### Memory Optimizations
+
+#### Improve Android App Performance
+To improve Android app performance, focus on these key areas:
+* **Memory Management:** Minimize memory usage by avoiding memory leaks, using efficient data structures, and handling bitmaps carefully. Use the Android Studio Memory Profiler to identify issues.
+* **CPU Optimization:** Reduce CPU usage by offloading long-running tasks from the main thread and optimizing your code. Use the Android Studio CPU Profiler to analyze performance.
+* **Rendering Performance:** Ensure a smooth UI (60 fps) by avoiding **overdraw**, simplifying view hierarchies, and using **`ConstraintLayout`**.
+* **Battery Efficiency:** Optimize for battery by using **`WorkManager`** for background tasks and batching network requests.
+
+#### What is the `onTrimMemory()` method?
+The **`onTrimMemory()`** method is a callback provided by the **`ComponentCallbacks2`** interface. The system calls this method to notify your app when memory is running low. Your app can then respond by releasing unnecessary resources to prevent the system from killing it. The method receives an integer argument that specifies the current memory pressure level, such as `TRIM_MEMORY_UI_HIDDEN` or `TRIM_MEMORY_RUNNING_CRITICAL`.
+
+#### How to identify and fix OutOfMemory issues?
+**`OutOfMemoryError`** (**`OOM`**) occurs when an app tries to allocate more memory than the available heap space. To fix this:
+* **Use the Android Profiler:** Use the **Memory Profiler** to observe the app's memory usage in real time. Look for a consistently increasing memory graph, which indicates a memory leak.
+* **Analyze Heap Dumps:** Capture a heap dump (`.hprof` file) from the Memory Profiler. Analyze it to see which objects are consuming the most memory.
+* **Fix the Issues:**
+    * **Bitmaps:** Load appropriately scaled bitmaps. Use libraries like **Glide** or **Coil**.
+    * **Memory Leaks:** Fix leaks by not holding onto `Context` in long-lived objects. Use a **`ViewModel`**.
+    * **Large Objects:** Use memory-efficient data structures.
+
+#### How do you find memory leaks in Android applications?
+* **Use the Android Studio Memory Profiler:** Monitor the memory usage graph. A continuously climbing graph indicates a leak.
+* **Force Garbage Collection:** In the profiler, you can manually trigger garbage collection to see if memory is released as expected.
+* **Capture and Analyze Heap Dumps:** Create a heap dump at a "clean" state and a "leaky" state. Compare the two dumps to find objects that should have been garbage collected. Tools like **LeakCanary** can automatically detect and report memory leaks.
+
+### Battery Life Optimizations
+
+#### How Android Implements Adaptive Battery Using ML?
+Android's Adaptive Battery uses a machine learning model to predict which apps the user will use. Based on this prediction, it places apps into different buckets with varying levels of resource restrictions. This ensures that frequently used apps remain active, while less-used apps have their background activity limited to save battery.
+
+#### How to reduce battery usage in an Android application?
+* **Use `WorkManager` or `JobScheduler`:** For background tasks, these APIs schedule work to run at optimal times (e.g., when the device is charging) and batch tasks together.
+* **Batch Network Requests:** Instead of many small network calls, batch them into fewer, larger requests to minimize radio usage.
+* **Use Sensors Wisely:** Only register for sensor updates when needed, and unregister them when your app is in the background.
+* **Minimize Wakelocks:** A **wakelock** prevents the device from sleeping. Use them sparingly and always release them as soon as possible.
+
+#### What is Doze? What about App Standby?
+* **Doze:** Introduced in Android 6.0, Doze is a power-saving mode that activates when a device is stationary, screen-off, and unplugged. It delays app background activity, network access, and jobs.
+* **App Standby:** This feature restricts the background activity of apps that the user has not recently used. The system places an idle app in a standby bucket, where its background network access and jobs are restricted.
+
+#### What is overdraw?
+**Overdraw** describes the system drawing a pixel on the screen multiple times in a single frame. This happens when multiple UI elements overlap. Excessive overdraw wastes GPU resources and can lead to performance issues.
+
+### Supporting Different Screen Sizes
+
+#### How do you support different types of resolutions?
+* **Density-Independent Pixels (dp):** Use `dp` units for specifying dimensions. The system scales `dp` values based on screen density.
+* **Scaled Pixels (sp):** Use `sp` units for font sizes. `sp` scales with both screen density and the user's font size preference.
+* **Resource Qualifiers:** Provide different resources for different screen configurations (e.g., `layout-sw600dp` for tablets, `drawable-xxxhdpi` for high-density screens).
+* **`ConstraintLayout`:** Use **`ConstraintLayout`** to build responsive UIs that adapt to different screen sizes.
+* **Vector Drawables:** Use vector graphics for icons. They are scalable and avoid the need for multiple image assets for different densities.
+
+### Permissions
+
+#### What are the different protection levels in permission?
+* **`normal`:** For permissions with minimal privacy risk. Granted automatically by the system at install time (e.g., `INTERNET`).
+* **`dangerous`:** For permissions that access sensitive data. The user must explicitly grant these permissions at runtime (e.g., `CAMERA`, `ACCESS_FINE_LOCATION`).
+* **`signature`:** Only granted to apps signed with the same key as the app that declared the permission.
+* **`signatureOrSystem`:** Granted to apps with the same signature or to system apps.
+
+### Native Programming
+
+#### What is the NDK and why is it useful?
+The **Android Native Development Kit (NDK)** is a set of tools that allows you to use C and C++ code with Android. It's useful for:
+* **Performance-Critical Code:** For tasks like games, physics simulations, or signal processing.
+* **Code Reusability:** To reuse existing C/C++ libraries.
+* **Platform-Specific APIs:** To access certain low-level APIs.
+
+#### What is renderscript?
+**RenderScript** was a framework for writing high-performance, data-parallel computations. It was mainly used for image processing. It has been **deprecated** in favor of using native C++ APIs with the NDK.
+
+### Android System Internals
+
+#### What is Android Runtime?
+The **Android Runtime (ART)** is the managed runtime used by the Android OS. It's responsible for converting an app's bytecode into native machine code. ART replaced Dalvik in Android 5.0 and improves performance through **Ahead-of-Time (AOT)** compilation.
+
+#### Dalvik, ART, JIT, and AOT in Android
+* **Dalvik:** The original Android runtime. It used a **Just-in-Time (JIT)** compiler, which compiled app code into native code at runtime.
+* **ART:** The current Android runtime. It uses **Ahead-of-Time (AOT)** compilation, which compiles app code into native code when the app is installed.
+* **JIT:** **Just-in-Time** compilation (code is compiled at runtime).
+* **AOT:** **Ahead-of-Time** compilation (code is compiled before it runs).
+
+#### What are the differences between Dalvik and ART?
+| Feature | Dalvik | ART |
+| :--- | :--- | :--- |
+| **Compilation** | JIT (Just-in-Time) | AOT (Ahead-of-Time) |
+| **App Install** | Faster | Slower |
+| **Runtime Performance** | Slower startup | Faster startup |
+| **Battery Life** | Lower efficiency | Better efficiency |
+| **Memory Footprint** | Smaller | Larger |
+
+#### Baseline Profiles
+**Baseline Profiles** are rules included in your app that specify which parts of the code are critical. **ART** uses these profiles to compile that critical code **AOT**, providing a balance between faster installation and optimized runtime performance.
+
+#### What is DEX?
+**DEX** stands for **Dalvik Executable**. It is a file format containing compiled code that runs on the Android platform. All the `.class` files in an app are compiled into one or more `.dex` files, which are then executed by ART.
+
+#### What is Multidex in Android?
+**Multidex** allows an Android app to exceed the 65,536 method limit of a single `.dex` file. When an app is too large, Multidex splits the app's code into multiple `.dex` files, which the system then loads at runtime.
+
+#### Can you manually call the Garbage collector?
+Yes, using `System.gc()`, but it's only a **suggestion** to the system, not a command. It is generally considered bad practice to call it explicitly, as the Android runtime's garbage collector is highly optimized.
+
+#### Android App Starts: Hot, Warm & Cold
+* **Cold Start:** The app is launched for the first time since boot or since the system killed it. The process is created from scratch. This is the slowest start.
+* **Warm Start:** The app process is already running, but the activity is not in memory. The system reuses the process but recreates the activity. Faster than a cold start.
+* **Hot Start:** The app's process and activity are still in memory. The system simply brings the activity to the foreground. This is the fastest start.
+
+### Android Jetpack
+
+#### What is Android Jetpack and why to use this?
+**Android Jetpack** is a collection of libraries, tools, and guidance to help developers build high-quality Android apps.
+**Why use it?**
+* **Best Practices:** Components are designed to follow modern best practices.
+* **Less Boilerplate:** Components like **`ViewModel`** and **`LiveData`** reduce boilerplate code.
+* **Compatibility:** Jetpack libraries are backwards-compatible.
+* **Improved App Stability:** Components like **`WorkManager`** and **`Lifecycle`** simplify complex tasks.
+
+#### What is a ViewModel and how is it useful?
+A **`ViewModel`** is a **lifecycle-aware component** designed to store and manage UI-related data. It survives configuration changes, such as screen rotations. This is useful because:
+* It prevents data loss on screen rotation.
+* It separates UI logic from data handling.
+* It simplifies testing.
+
+#### SharedViewModel in Android
+A **`SharedViewModel`** is a **`ViewModel`** that is scoped to an `Activity` and shared between multiple `Fragments` within that `Activity`. It's a clean way for fragments to communicate with each other and share data.
+
+#### What are Android Architecture Components?
+**Android Architecture Components** are a set of libraries (part of Jetpack) designed to help build robust, testable, and maintainable apps. The main components are `LiveData`, `ViewModel`, `Room`, `Lifecycle`, and `WorkManager`.
+
+#### StateFlow vs LiveData in Android Development
+| Feature | `StateFlow` | `LiveData` |
+| :--- | :--- | :--- |
+| **Concurrency** | Built on Kotlin Coroutines, has full concurrency support. | Main thread-aware, but not fully concurrent. |
+| **Lifecycle** | Not lifecycle-aware by default. Needs `repeatOnLifecycle`. | Is lifecycle-aware by default. |
+| **Initial Value** | Requires an initial value. | Does not require an initial value. |
+| **Use Case** | Ideal for a reactive UI and complex data streams. | Good for simple UI state and data holding. |
+
+#### What is LiveData in Android?
+**`LiveData`** is a **lifecycle-aware observable data holder**. It holds a value and notifies observers when the data changes, but only sends updates to observers that are in an active lifecycle state (e.g., `STARTED` or `RESUMED`).
+
+#### How is LiveData different from ObservableField?
+* **`LiveData`** is lifecycle-aware and automatically manages subscriptions.
+* **`ObservableField`** is not lifecycle-aware. You must manually manage listeners to avoid memory leaks. `LiveData` is the modern and recommended approach.
+
+#### What is the difference between setValue and postValue in LiveData?
+* **`setValue()`:** Updates the `LiveData` value **synchronously** on the **main thread**.
+* **`postValue()`:** Updates the `LiveData` value **asynchronously** from a background thread.
+
+#### How do you share ViewModel between Fragments in Android?
+To share a **`ViewModel`** between fragments, scope the `ViewModel` to their shared `Activity`. Instead of using `ViewModelProvider(this)`, create it with `ViewModelProvider(requireActivity())`. Both fragments will then get the same instance.
+
+#### Explain WorkManager and its use cases.
+**`WorkManager`** is a library for managing deferrable background tasks that are guaranteed to run, even if the app exits or the device restarts.
+* **Use Cases:** Sending logs, periodically syncing data, uploading images.
+* **Key Features:** Guaranteed execution, support for constraints (e.g., requires network, requires charging), and both one-time & periodic work.
+
+#### Minimum repeat interval allowed when scheduling a PeriodicWorkRequest using WorkManager
+The minimum repeat interval for a **`PeriodicWorkRequest`** is **15 minutes**. Any value less than this will be automatically adjusted up to 15 minutes.
+
+#### How Does WorkManager Guarantee Task Execution?
+**`WorkManager`** guarantees execution by using a persistent, internal database to store all work requests. If the device reboots or the app is killed, `WorkManager` reads its database upon restart and reschedules any pending tasks.
+
+#### How does ViewModel work internally?
+When you request a `ViewModel`, a `ViewModelProvider` checks a `ViewModelStore` associated with the `Activity` or `Fragment`. The `ViewModelStore` is a simple map that holds `ViewModel` objects. When a configuration change occurs, the **`ViewModelStore` is retained**, and the new UI component instance gets the same `ViewModel` from it. When the UI component is finally destroyed, its `onCleared()` method is called.
 
 ### Long-running Operations
 
