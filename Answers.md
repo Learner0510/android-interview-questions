@@ -1,8 +1,239 @@
-Here is your complete, untruncated, and properly structured content ready to be copied directly into a `README.md` file. All formatting is preserved for GitHub/Markdown compatibility, with clear section headers, code blocks, and consistent structure.
+Here's your README.md with a clickable table of contents at the top:
+
+````markdown
+# 📚 Table of Contents
+
+## Kotlin Flow API
+- [Kotlin Flow API](#kotlin-flow-api)
+- [Flow Builder, Operator, Collector](#flow-builder-operator-collector)
+- [flowOn, Dispatchers](#flowon-dispatchers)
+- [Operators](#operators)
+- [Terminal Operators](#terminal-operators)
+- [Cold Flow vs. Hot Flow](#cold-flow-vs-hot-flow)
+- [StateFlow, SharedFlow, callbackFlow, channelFlow](#stateflow-sharedflow-callbackflow-channelflow)
+- [Exception Handling in Flow](#exception-handling-in-flow)
+- [Unit Testing with Flow](#unit-testing-with-flow)
+
+## Android & Kotlin Fundamentals
+- [Android Push Notification Flow using FCM](#android-push-notification-flow-using-fcm)
+- [What is an inline function in Kotlin?](#what-is-an-inline-function-in-kotlin)
+- [What is the advantage of using const in Kotlin?](#what-is-the-advantage-of-using-const-in-kotlin)
+- [What is a reified keyword in Kotlin?](#what-is-a-reified-keyword-in-kotlin)
+- [internal visibility modifier in Kotlin](#internal-visibility-modifier-in-kotlin)
+- [open keyword in Kotlin](#open-keyword-in-kotlin)
+- [lateinit vs lazy in Kotlin](#lateinit-vs-lazy-in-kotlin)
+- [What is Multidex in Android?](#what-is-multidex-in-android)
+- [How does the Android Push Notification system work?](#how-does-the-android-push-notification-system-work)
+- [How does the Kotlin Multiplatform work?](#how-does-the-kotlin-multiplatform-work)
+- [What is a ViewModel and how is it useful?](#what-is-a-viewmodel-and-how-is-it-useful)
+- [Is it possible to force Garbage Collection in Android?](#is-it-possible-to-force-garbage-collection-in-android)
+- [What is a JvmStatic Annotation in Kotlin?](#what-is-a-jvmstatic-annotation-in-kotlin)
+- [init block in Kotlin](#init-block-in-kotlin)
+- [JvmField Annotation in Kotlin](#jvmfield-annotation-in-kotlin)
+- [singleTask launchMode in Android](#singletask-launchmode-in-android)
+- [Difference between == and === in Kotlin](#difference-between--and--in-kotlin)
+- [JvmOverloads Annotation in Kotlin](#jvmoverloads-annotation-in-kotlin)
+- [Why is it recommended to use only the default constructor to create a Fragment?](#why-is-it-recommended-to-use-only-the-default-constructor-to-create-a-fragment)
+- [Why do we need to call setContentView() in onCreate() of Activity class?](#why-do-we-need-to-call-setcontentview-in-oncreate-of-activity-class)
+- [When only onDestroy is called for an activity without onPause() and onStop()?](#when-only-ondestroy-is-called-for-an-activity-without-onpause-and-onstop)
+
+## Kotlin Coroutines
+- [Master Kotlin Coroutines](#master-kotlin-coroutines)
+  - [Suspending vs. Blocking in Kotlin Coroutines](#suspending-vs-blocking-in-kotlin-coroutines)
+  - [Launch vs. Async in Kotlin Coroutines](#launch-vs-async-in-kotlin-coroutines)
+  - [Dispatchers in Kotlin Coroutines](#dispatchers-in-kotlin-coroutines)
+  - [coroutineScope vs. supervisorScope](#coroutinescope-vs-supervisorscope)
+  - [Suspend Function in Kotlin Coroutines](#suspend-function-in-kotlin-coroutines)
+  - [Kotlin withContext vs. async-await](#kotlin-withcontext-vs-async-await)
+  - [CoroutineContext in Kotlin](#coroutinecontext-in-kotlin)
+  - [Callback to Coroutines in Kotlin](#callback-to-coroutines-in-kotlin)
+  - [Retrofit with Kotlin Coroutines](#retrofit-with-kotlin-coroutines)
+  - [Parallel Multiple Network Calls Using Kotlin Coroutines](#parallel-multiple-network-calls-using-kotlin-coroutines)
+  - [Room Database with Kotlin Coroutines](#room-database-with-kotlin-coroutines)
+  - [Unit Testing ViewModel with Kotlin Coroutines and LiveData](#unit-testing-viewmodel-with-kotlin-coroutines-and-livedata)
+- [What is Coroutines?](#what-is-coroutines)
+  - [Key Concepts](#key-concepts)
+  - [Coroutines vs. Threads](#coroutines-vs-threads)
+- [withContext](#withcontext)
+  - [How It Works](#how-it-works)
+  - [Example](#example)
+  - [withContext vs. async](#withcontext-vs-async)
+- [Exception Handling in Coroutines](#exception-handling-in-coroutines)
+  - [Exception Propagation](#exception-propagation)
+  - [Handling Exceptions with try-catch](#handling-exceptions-with-try-catch)
+  - [The CoroutineExceptionHandler](#the-coroutineexceptionhandler)
+  - [Special Cases](#special-cases)
+  - [Practical Comparison: supervisorScope vs coroutineScope](#practical-comparison-supervisorscope-vs-coroutinescope)
 
 ---
 
-# Android Push Notification Flow using FCM
+# Kotlin Flow API
+
+The Kotlin Flow API is a powerful library for handling asynchronous data streams. It's built on top of coroutines, providing a reactive programming paradigm that's both efficient and easy to reason about. A **`Flow`** represents a stream of asynchronously computed values, similar to an RxJava `Observable`, but it's cold by default.
+
+---
+
+## Flow Builder, Operator, Collector
+
+The Flow API is built around three main components that represent the lifecycle of a data stream:
+
+*   **Flow Builder**: This is how you create a `Flow`. Builders produce values that are emitted into the stream. The most common builder is `flow { ... }`.
+    ```kotlin
+    val myFlow = flow {
+        // Emit values into the stream
+        for (i in 1..3) {
+            emit(i)
+            delay(100) // Simulate a non-blocking delay
+        }
+    }
+    ```
+*   **Operators**: These are functions that transform or modify the data emitted by a `Flow`. They operate on the upstream `Flow` and return a new `Flow`. Operators are a key part of the declarative nature of the Flow API.
+    ```kotlin
+    myFlow.map { it * 2 } // Transforms each emitted value
+          .filter { it > 2 } // Filters values based on a condition
+    ```
+*   **Collector**: This is the final step in the stream. A collector consumes the values emitted by the `Flow`. The most common collector is `collect()`, which is a terminal operator.
+    ```kotlin
+    coroutineScope.launch {
+        myFlow.collect { value ->
+            println("Received: $value")
+        }
+    }
+    ```
+
+---
+
+## `flowOn`, Dispatchers
+
+The **`flowOn`** operator is used to change the `Dispatcher` (the thread or thread pool) that the upstream `Flow` runs on. This is crucial for separating I/O-bound work (like network calls or database operations) from CPU-intensive or UI work.
+
+*   The upstream `Flow` (the part before `flowOn`) will run on the specified dispatcher.
+*   The downstream `Flow` (the part after `flowOn`) will continue to run on its original context.
+
+```kotlin
+fun getItems(): Flow<Item> = flow {
+    // This part runs on Dispatchers.IO
+    // Good for database or network calls
+    emit(api.fetchItems())
+}.flowOn(Dispatchers.IO)
+ // The collector will run on the original context (e.g., Dispatchers.Main)
+ .onEach { // This operator runs on the new context
+     // ...
+ }
+```
+
+`flowOn` is an essential tool for making sure your `Flow`s are non-blocking and efficient.
+
+---
+
+## Operators
+
+| Operator              | Description                                                                                             | Example                                         |
+| :-------------------- | :------------------------------------------------------------------------------------------------------ | :---------------------------------------------- |
+| **`filter`**          | Excludes items from the stream that don't satisfy a predicate.                                          | `flowOf(1, 2, 3).filter { it % 2 == 0 }` (emits 2) |
+| **`map`**             | Transforms each value in the stream into another value.                                                 | `flowOf(1, 2).map { it * 10 }` (emits 10, 20)     |
+| **`zip`**             | Combines the values of two `Flow`s into a single stream. It waits for a new value from both `Flow`s before emitting a combined value. Useful for parallel network calls. | `flow1.zip(flow2) { a, b -> a + b }`            |
+| **`flatMapConcat`**   | Processes items sequentially. It concatenates the streams created from each upstream item. A new inner stream will not start until the previous one completes. | `flowOf(1, 2).flatMapConcat { requestData(it) }` |
+| **`retry`**           | Retries the `Flow` when an exception occurs, up to a specified number of times.                         | `myFlow.retry(3)`                               |
+| **`debounce`**        | Suppresses values that are emitted too quickly. It emits a value only after a specified time has passed without a new emission. Great for instant search. | `events.debounce(300)`                          |
+| **`distinctUntilChanged`** | Filters out consecutive identical values.                                                               | `flowOf("A", "A", "B", "A").distinctUntilChanged()` (emits "A", "B", "A") |
+| **`flatMapLatest`**   | Processes items concurrently. When a new value arrives, it cancels the previous inner stream and starts a new one. | `flowOf(1, 2).flatMapLatest { requestData(it) }` |
+
+---
+
+## Terminal Operators
+
+A **terminal operator** is a function that starts the collection of a `Flow`. When a terminal operator is called, the `Flow` is activated, and the builder and operators begin emitting and processing values. A `Flow` is **cold** and does nothing until a terminal operator is called.
+
+Common terminal operators include:
+
+*   **`collect()`**: Collects all values from the `Flow`.
+*   **`first()`**: Returns the first value from the `Flow`.
+*   **`toList()`**: Converts all values to a list.
+*   **`single()`**: Collects and returns the single value from the `Flow` (throws an exception if there are zero or multiple values).
+*   **`launchIn()`**: A non-suspending way to launch a collection in a given `CoroutineScope`.
+
+---
+
+## Cold Flow vs. Hot Flow
+
+| Feature   | Cold Flow                                                                 | Hot Flow                      |
+| :-------- | :------------------------------------------------------------------------ | :---------------------------- |
+| **Start** | Starts emitting values only when a collector starts collecting.            | Starts emitting values immediately, regardless of collectors. |
+| **State** | Each collector gets a new, independent stream of data from the beginning. | All collectors share the same stream of data. |
+| **Example** | `flow { emit(...) }`                                                      | **`StateFlow`**, **`SharedFlow`** |
+
+A **cold `Flow`** is like a blueprint for a water faucet—it doesn't start producing water until you turn it on. A **hot `Flow`** is like a running water hose—it's always producing water, and new collectors can tap into the stream at any point.
+
+---
+
+## StateFlow, SharedFlow, callbackFlow, channelFlow
+
+*   **`StateFlow`**: A hot `Flow` that represents a state. It always holds and emits a single, latest value. It's a great replacement for `LiveData` in many scenarios, as it's lifecycle-aware and can be easily used with coroutines. It's primarily used to represent UI state.
+*   **`SharedFlow`**: A highly configurable hot `Flow` that can broadcast values to multiple collectors. It's useful for event streams where multiple parts of your app need to react to the same event. You can configure its replay cache and buffer size to control how it behaves.
+*   **`callbackFlow`**: A builder used to convert a callback-based API into a `Flow`. It provides a `ProducerScope` that allows you to emit values from a callback and then close the `Flow` when the callback stream is finished. This is crucial for interoperability with older APIs.
+*   **`channelFlow`**: A more powerful version of `callbackFlow`. It allows for more complex emission patterns, including sending values to the underlying channel from multiple coroutines.
+
+---
+
+## Exception Handling in Flow
+
+Exceptions in a `Flow` are handled with a **`catch`** operator. The `catch` operator intercepts an exception from the upstream `Flow` and can handle it, log it, or emit a new value.
+
+```kotlin
+myFlow
+    .onEach { throw IOException("Network error") } // This will throw an exception
+    .catch { e ->
+        // This operator catches the exception
+        println("Caught exception: ${e.message}")
+        // You can also emit a new value to recover
+        emit("Fallback value")
+    }
+    .collect()
+```
+
+The `catch` operator is **upstream-only**; it cannot catch exceptions from downstream operators.
+
+---
+
+## Unit Testing with Flow
+
+Testing a `ViewModel` that uses `Flow` and `StateFlow` is straightforward with the `kotlinx-coroutines-test` library.
+
+1.  Use `TestCoroutineDispatcher` to control the coroutine execution.
+2.  Use `runBlockingTest` or `runTest` to execute the coroutine scope.
+3.  Use the `collect` terminal operator on your `StateFlow` to check its emitted values.
+
+```kotlin
+class MyViewModelTest {
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule() // For LiveData
+
+    @get:Rule
+    val mainCoroutineRule = MainCoroutineRule() // Custom rule for TestCoroutineDispatcher
+
+    @Test
+    fun `test fetch data and state updates`() = mainCoroutineRule.runBlockingTest {
+        // Given
+        val viewModel = MyViewModel(mockRepository)
+        // A list to collect the state changes
+        val states = mutableListOf<MyState>()
+        val job = launch { viewModel.myState.toList(states) }
+        
+        // When
+        viewModel.fetchData()
+        
+        // Then
+        // Check initial state, loading state, and success state
+        Truth.assertThat(states).containsExactly(MyState.Loading, MyState.Success("Data"))
+        job.cancel()
+    }
+}
+```
+
+---
+
+## Android Push Notification Flow using FCM
 
 The Android push notification flow using Firebase Cloud Messaging (FCM) involves a few key steps and components:
 
@@ -712,12 +943,11 @@ The core of coroutines are suspending functions, marked with the `suspend` keywo
 
 While threads are managed by the operating system and are a unit of CPU execution, coroutines are managed by the application code and are a unit of work. Think of a thread as a physical assembly line in a factory, whereas a coroutine is a single task or item on that line. A few assembly lines can handle a vast number of tasks efficiently.
 
---- 
+---
 
-```markdown
-# withContext
+## withContext
 
-`withContext` is a suspending function in Kotlin Coroutines that allows you to change the `CoroutineContext` of the current coroutine. It’s primarily used to switch to a different thread or thread pool (a different `Dispatcher`) for a specific block of code and then return to the original context when the block is finished.
+`withContext` is a suspending function in Kotlin Coroutines that allows you to change the `CoroutineContext` of the current coroutine. It's primarily used to switch to a different thread or thread pool (a different `Dispatcher`) for a specific block of code and then return to the original context when the block is finished.
 
 ### How It Works
 
@@ -749,17 +979,17 @@ While both can switch dispatchers, their primary purposes differ.
 
 | **withContext** | **async** |
 |------------------|-----------|
-| Best for a single, sequential operation. It’s a "suspending block" that ensures the operation completes before the rest of the code continues. | Best for running tasks in parallel. `async` launches a new coroutine that runs concurrently with the original one. You then use `await()` to get the result when needed. |
+| Best for a single, sequential operation. It's a "suspending block" that ensures the operation completes before the rest of the code continues. | Best for running tasks in parallel. `async` launches a new coroutine that runs concurrently with the original one. You then use `await()` to get the result when needed. |
 
 ---
 
-# Exception Handling in Coroutines
+## Exception Handling in Coroutines
 
 Exception handling in Kotlin Coroutines follows a structured approach based on the coroutine hierarchy and structured concurrency. Unlike traditional thread-based systems where exceptions can be swallowed or lead to silent crashes, coroutines provide predictable and explicit mechanisms to deal with errors.
 
 ### Exception Propagation
 
-When a coroutine throws an unhandled exception, it’s propagated up the coroutine hierarchy. The coroutine’s `Job` acts as its parent. When a child coroutine fails with an exception, the parent `Job` is immediately canceled. This cancellation then cascades to all other sibling coroutines, ensuring that all related tasks are stopped to prevent inconsistent state.
+When a coroutine throws an unhandled exception, it's propagated up the coroutine hierarchy. The coroutine's `Job` acts as its parent. When a child coroutine fails with an exception, the parent `Job` is immediately canceled. This cancellation then cascades to all other sibling coroutines, ensuring that all related tasks are stopped to prevent inconsistent state.
 
 This "fail-fast" behavior is the default and is a core part of structured concurrency. It prevents silent failures and helps in debugging.
 
@@ -788,7 +1018,7 @@ fun main() = runBlocking {
 
 ### The CoroutineExceptionHandler
 
-For handling exceptions that are not caught by a `try-catch` block, you can use a `CoroutineExceptionHandler`. This is an optional element you can add to a coroutine’s `CoroutineContext`. It acts as a global handler for a specific coroutine or a coroutine scope.
+For handling exceptions that are not caught by a `try-catch` block, you can use a `CoroutineExceptionHandler`. This is an optional element you can add to a coroutine's `CoroutineContext`. It acts as a global handler for a specific coroutine or a coroutine scope.
 
 When a child coroutine fails, the exception is passed to the `CoroutineExceptionHandler` if one is defined.
 
@@ -830,7 +1060,7 @@ try {
 ```
 
 #### SupervisorJob
-When using a `supervisorScope` or a `SupervisorJob`, an exception in a child coroutine does not cancel its siblings or its parent. This is useful for building isolated, independent tasks within a single scope where a failure in one shouldn’t affect the others. The exception is still propagated up and can be handled by a `CoroutineExceptionHandler` on the `SupervisorJob`.
+When using a `supervisorScope` or a `SupervisorJob`, an exception in a child coroutine does not cancel its siblings or its parent. This is useful for building isolated, independent tasks within a single scope where a failure in one shouldn't affect the others. The exception is still propagated up and can be handled by a `CoroutineExceptionHandler` on the `SupervisorJob`.
 
 ---
 
@@ -891,171 +1121,4 @@ launch {
 - A failure in one child coroutine (e.g., `usersDeferred`) cancels all siblings and the parent scope.  
 - Even with `try-catch`, canceled coroutines (e.g., `moreUsersDeferred`) will throw `CancellationException`.  
 ✅ **Use Case**: Best for interdependent operations (e.g., fetching primary data and metadata) where failure invalidates others.
-```
-
-
-```markdown
-### Kotlin Flow API
-
-The Kotlin Flow API is a powerful library for handling asynchronous data streams. It's built on top of coroutines, providing a reactive programming paradigm that's both efficient and easy to reason about. A **`Flow`** represents a stream of asynchronously computed values, similar to an RxJava `Observable`, but it's cold by default.
-
----
-
-### Flow Builder, Operator, Collector
-
-The Flow API is built around three main components that represent the lifecycle of a data stream:
-
-*   **Flow Builder**: This is how you create a `Flow`. Builders produce values that are emitted into the stream. The most common builder is `flow { ... }`.
-    ```kotlin
-    val myFlow = flow {
-        // Emit values into the stream
-        for (i in 1..3) {
-            emit(i)
-            delay(100) // Simulate a non-blocking delay
-        }
-    }
-    ```
-*   **Operators**: These are functions that transform or modify the data emitted by a `Flow`. They operate on the upstream `Flow` and return a new `Flow`. Operators are a key part of the declarative nature of the Flow API.
-    ```kotlin
-    myFlow.map { it * 2 } // Transforms each emitted value
-          .filter { it > 2 } // Filters values based on a condition
-    ```
-*   **Collector**: This is the final step in the stream. A collector consumes the values emitted by the `Flow`. The most common collector is `collect()`, which is a terminal operator.
-    ```kotlin
-    coroutineScope.launch {
-        myFlow.collect { value ->
-            println("Received: $value")
-        }
-    }
-    ```
-
----
-
-### `flowOn`, Dispatchers
-
-The **`flowOn`** operator is used to change the `Dispatcher` (the thread or thread pool) that the upstream `Flow` runs on. This is crucial for separating I/O-bound work (like network calls or database operations) from CPU-intensive or UI work.
-
-*   The upstream `Flow` (the part before `flowOn`) will run on the specified dispatcher.
-*   The downstream `Flow` (the part after `flowOn`) will continue to run on its original context.
-
-```kotlin
-fun getItems(): Flow<Item> = flow {
-    // This part runs on Dispatchers.IO
-    // Good for database or network calls
-    emit(api.fetchItems())
-}.flowOn(Dispatchers.IO)
- // The collector will run on the original context (e.g., Dispatchers.Main)
- .onEach { // This operator runs on the new context
-     // ...
- }
-```
-
-`flowOn` is an essential tool for making sure your `Flow`s are non-blocking and efficient.
-
----
-
-### Operators
-
-| Operator              | Description                                                                                             | Example                                         |
-| :-------------------- | :------------------------------------------------------------------------------------------------------ | :---------------------------------------------- |
-| **`filter`**          | Excludes items from the stream that don't satisfy a predicate.                                          | `flowOf(1, 2, 3).filter { it % 2 == 0 }` (emits 2) |
-| **`map`**             | Transforms each value in the stream into another value.                                                 | `flowOf(1, 2).map { it * 10 }` (emits 10, 20)     |
-| **`zip`**             | Combines the values of two `Flow`s into a single stream. It waits for a new value from both `Flow`s before emitting a combined value. Useful for parallel network calls. | `flow1.zip(flow2) { a, b -> a + b }`            |
-| **`flatMapConcat`**   | Processes items sequentially. It concatenates the streams created from each upstream item. A new inner stream will not start until the previous one completes. | `flowOf(1, 2).flatMapConcat { requestData(it) }` |
-| **`retry`**           | Retries the `Flow` when an exception occurs, up to a specified number of times.                         | `myFlow.retry(3)`                               |
-| **`debounce`**        | Suppresses values that are emitted too quickly. It emits a value only after a specified time has passed without a new emission. Great for instant search. | `events.debounce(300)`                          |
-| **`distinctUntilChanged`** | Filters out consecutive identical values.                                                               | `flowOf("A", "A", "B", "A").distinctUntilChanged()` (emits "A", "B", "A") |
-| **`flatMapLatest`**   | Processes items concurrently. When a new value arrives, it cancels the previous inner stream and starts a new one. | `flowOf(1, 2).flatMapLatest { requestData(it) }` |
-
----
-
-### Terminal Operators
-
-A **terminal operator** is a function that starts the collection of a `Flow`. When a terminal operator is called, the `Flow` is activated, and the builder and operators begin emitting and processing values. A `Flow` is **cold** and does nothing until a terminal operator is called.
-
-Common terminal operators include:
-
-*   **`collect()`**: Collects all values from the `Flow`.
-*   **`first()`**: Returns the first value from the `Flow`.
-*   **`toList()`**: Converts all values to a list.
-*   **`single()`**: Collects and returns the single value from the `Flow` (throws an exception if there are zero or multiple values).
-*   **`launchIn()`**: A non-suspending way to launch a collection in a given `CoroutineScope`.
-
----
-
-### Cold Flow vs. Hot Flow
-
-| Feature   | Cold Flow                                                                 | Hot Flow                      |
-| :-------- | :------------------------------------------------------------------------ | :---------------------------- |
-| **Start** | Starts emitting values only when a collector starts collecting.            | Starts emitting values immediately, regardless of collectors. |
-| **State** | Each collector gets a new, independent stream of data from the beginning. | All collectors share the same stream of data. |
-| **Example** | `flow { emit(...) }`                                                      | **`StateFlow`**, **`SharedFlow`** |
-
-A **cold `Flow`** is like a blueprint for a water faucet—it doesn't start producing water until you turn it on. A **hot `Flow`** is like a running water hose—it's always producing water, and new collectors can tap into the stream at any point.
-
----
-
-### StateFlow, SharedFlow, callbackFlow, channelFlow
-
-*   **`StateFlow`**: A hot `Flow` that represents a state. It always holds and emits a single, latest value. It's a great replacement for `LiveData` in many scenarios, as it's lifecycle-aware and can be easily used with coroutines. It's primarily used to represent UI state.
-*   **`SharedFlow`**: A highly configurable hot `Flow` that can broadcast values to multiple collectors. It's useful for event streams where multiple parts of your app need to react to the same event. You can configure its replay cache and buffer size to control how it behaves.
-*   **`callbackFlow`**: A builder used to convert a callback-based API into a `Flow`. It provides a `ProducerScope` that allows you to emit values from a callback and then close the `Flow` when the callback stream is finished. This is crucial for interoperability with older APIs.
-*   **`channelFlow`**: A more powerful version of `callbackFlow`. It allows for more complex emission patterns, including sending values to the underlying channel from multiple coroutines.
-
----
-
-### Exception Handling in Flow
-
-Exceptions in a `Flow` are handled with a **`catch`** operator. The `catch` operator intercepts an exception from the upstream `Flow` and can handle it, log it, or emit a new value.
-
-```kotlin
-myFlow
-    .onEach { throw IOException("Network error") } // This will throw an exception
-    .catch { e ->
-        // This operator catches the exception
-        println("Caught exception: ${e.message}")
-        // You can also emit a new value to recover
-        emit("Fallback value")
-    }
-    .collect()
-```
-
-The `catch` operator is **upstream-only**; it cannot catch exceptions from downstream operators.
-
----
-
-### Unit Testing with Flow
-
-Testing a `ViewModel` that uses `Flow` and `StateFlow` is straightforward with the `kotlinx-coroutines-test` library.
-
-1.  Use `TestCoroutineDispatcher` to control the coroutine execution.
-2.  Use `runBlockingTest` or `runTest` to execute the coroutine scope.
-3.  Use the `collect` terminal operator on your `StateFlow` to check its emitted values.
-
-```kotlin
-class MyViewModelTest {
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule() // For LiveData
-
-    @get:Rule
-    val mainCoroutineRule = MainCoroutineRule() // Custom rule for TestCoroutineDispatcher
-
-    @Test
-    fun `test fetch data and state updates`() = mainCoroutineRule.runBlockingTest {
-        // Given
-        val viewModel = MyViewModel(mockRepository)
-        // A list to collect the state changes
-        val states = mutableListOf<MyState>()
-        val job = launch { viewModel.myState.toList(states) }
-        
-        // When
-        viewModel.fetchData()
-        
-        // Then
-        // Check initial state, loading state, and success state
-        Truth.assertThat(states).containsExactly(MyState.Loading, MyState.Success("Data"))
-        job.cancel()
-    }
-}
-```
-
+````
