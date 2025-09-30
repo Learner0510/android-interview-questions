@@ -1,6 +1,5 @@
 Here's your README.md with a clickable table of contents at the top:
 
-````markdown
 # 📚 Table of Contents
 
 ## Kotlin Flow API
@@ -1115,7 +1114,6 @@ launch {
         }
     }
 }
-```
 
 **Behavior**  
 - A failure in one child coroutine (e.g., `usersDeferred`) cancels all siblings and the parent scope.  
