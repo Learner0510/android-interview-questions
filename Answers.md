@@ -1,30 +1,36 @@
-Android Push Notification Flow using FCM
+Here is your complete, untruncated, and properly structured content ready to be copied directly into a `README.md` file. All formatting is preserved for GitHub/Markdown compatibility, with clear section headers, code blocks, and consistent structure.
+
+---
+
+# Android Push Notification Flow using FCM
 
 The Android push notification flow using Firebase Cloud Messaging (FCM) involves a few key steps and components:
 
-    Client App Instance: When an app is installed on an Android device, the FCM SDK automatically generates a unique registration token. This token identifies the app instance on that specific device. The app should send this token to your app server.
+- **Client App Instance**: When an app is installed on an Android device, the FCM SDK automatically generates a unique registration token. This token identifies the app instance on that specific device. The app should send this token to your app server.
 
-    App Server: Your app server or a third-party server creates the notification payload. This payload can contain a notification field for a standard message (title, body, icon) and a data field for custom key-value pairs. The server then sends a request to the FCM server using this payload and the device's registration token.
+- **App Server**: Your app server or a third-party server creates the notification payload. This payload can contain a `notification` field for a standard message (title, body, icon) and a `data` field for custom key-value pairs. The server then sends a request to the FCM server using this payload and the device's registration token.
 
-    FCM Server: The FCM server receives the request, processes it, and routes the message to the target device. It handles the complexities of message delivery, even if the device is offline or in a low-power state (Doze mode).
+- **FCM Server**: The FCM server receives the request, processes it, and routes the message to the target device. It handles the complexities of message delivery, even if the device is offline or in a low-power state (Doze mode).
 
-    Device: The Android device receives the message from FCM. The behavior upon reception depends on the app's state:
+- **Device**: The Android device receives the message from FCM. The behavior upon reception depends on the app's state:
 
-        App in the background: If the payload contains a notification field, FCM displays the notification in the system tray. The app's onMessageReceived method is not called. The data payload is delivered to the app when the user taps the notification.
+  - **App in the background**: If the payload contains a `notification` field, FCM displays the notification in the system tray. The app's `onMessageReceived` method is not called. The data payload is delivered to the app when the user taps the notification.
 
-        App in the foreground: The onMessageReceived method of your app's FirebaseMessagingService is called immediately. The app receives the message object, which contains both notification and data payloads, and can handle the notification programmatically.
+  - **App in the foreground**: The `onMessageReceived` method of your app's `FirebaseMessagingService` is called immediately. The app receives the message object, which contains both notification and data payloads, and can handle the notification programmatically.
 
 The main advantage of FCM is that it provides a reliable, cross-platform way to send messages without needing a constant open connection from your app to your server, which saves battery and resources.
 
-What is an inline function in Kotlin?
+---
+
+## What is an inline function in Kotlin?
 
 An inline function in Kotlin is a function that the compiler replaces with the actual function body at the call site. This is a form of code substitution that happens during compilation, not runtime.
 
 The primary purpose of using inline functions is to reduce the overhead of lambda expressions. When a function takes a lambda as a parameter, the lambda is an object that gets created and allocated in memory. By inlining the function, the compiler avoids creating this object, which can improve performance, especially in loops or frequently called functions.
 
-Example:
-Kotlin
+**Example:**
 
+```kotlin
 // A regular function with a lambda
 fun calculate(a: Int, b: Int, operation: (Int, Int) -> Int): Int {
     return operation(a, b)
@@ -38,40 +44,43 @@ inline fun calculateInline(a: Int, b: Int, operation: (Int, Int) -> Int): Int {
 // The 'calculateInline' function call
 // will be replaced by the compiler with:
 // return a + b
+```
 
-What is the advantage of using const in Kotlin?
+---
 
-The primary advantage of using const in Kotlin is that it creates a compile-time constant. The value is "inlined" directly into the code wherever it's used, meaning there's no runtime overhead to access the variable. This provides a performance benefit.
+## What is the advantage of using const in Kotlin?
 
-Here are the key characteristics of a const property:
+The primary advantage of using `const` in Kotlin is that it creates a compile-time constant. The value is "inlined" directly into the code wherever it's used, meaning there's no runtime overhead to access the variable. This provides a performance benefit.
 
-    It must be a val (immutable).
+Here are the key characteristics of a `const` property:
 
-    It must be a top-level property, or a member of an object or a companion object.
+- It must be a `val` (immutable).
+- It must be a top-level property, or a member of an `object` or a `companion object`.
+- It must be initialized with a primitive type (`String`, `Int`, `Boolean`, etc.) or a `String`.
+- The value must be known at compile time.
 
-    It must be initialized with a primitive type (String, Int, Boolean, etc.) or a String.
+**Example:**
 
-    The value must be known at compile time.
-
-Example:
-Kotlin
-
+```kotlin
 const val APP_NAME = "My Awesome App"
 
 fun printAppName() {
     // The compiler replaces 'APP_NAME' with the literal "My Awesome App"
     println(APP_NAME)
 }
+```
 
-What is a reified keyword in Kotlin?
+---
 
-The reified keyword in Kotlin is used with inline functions to access type information at runtime for a generic type parameter. Normally, generic type information is erased at compile time (a concept known as type erasure in the JVM). This means you cannot check the type of a generic parameter at runtime with operators like is or as.
+## What is a reified keyword in Kotlin?
 
-By marking an inline function's type parameter as reified, the compiler replaces the generic type with its actual type during inlining, making it available for checks and operations at runtime.
+The `reified` keyword in Kotlin is used with inline functions to access type information at runtime for a generic type parameter. Normally, generic type information is erased at compile time (a concept known as type erasure in the JVM). This means you cannot check the type of a generic parameter at runtime with operators like `is` or `as`.
 
-Example:
-Kotlin
+By marking an inline function's type parameter as `reified`, the compiler replaces the generic type with its actual type during inlining, making it available for checks and operations at runtime.
 
+**Example:**
+
+```kotlin
 // This will not compile due to type erasure
 // fun <T> findByType(list: List<Any>): T? {
 //    return list.find { it is T } // ERROR: Cannot check for T
@@ -86,60 +95,68 @@ inline fun <reified T> findByType(list: List<Any>): T? {
 // Usage:
 val myNumbers = listOf(1, "hello", 2, true)
 val firstString: String? = findByType<String>(myNumbers)
+```
 
-Suspending vs Blocking in Kotlin Coroutines
+---
+
+## Suspending vs Blocking in Kotlin Coroutines
 
 The main difference between suspending and blocking in Kotlin Coroutines is how they manage the underlying thread's execution.
 
-    Suspending: A suspending function (marked with the suspend keyword) can pause its execution without blocking the thread it's running on. This is the core of coroutine efficiency. When a suspending function needs to wait for a result (e.g., a network call), it "suspends" the coroutine, freeing the thread to perform other work. When the result is ready, the coroutine can resume on the same or a different thread. This leads to efficient resource utilization and non-blocking I/O.
+- **Suspending**: A suspending function (marked with the `suspend` keyword) can pause its execution without blocking the thread it's running on. This is the core of coroutine efficiency. When a suspending function needs to wait for a result (e.g., a network call), it "suspends" the coroutine, freeing the thread to perform other work. When the result is ready, the coroutine can resume on the same or a different thread. This leads to efficient resource utilization and non-blocking I/O.
 
-    Blocking: A blocking operation stops the thread's execution completely until the operation is finished. While the thread is blocked, it cannot do any other work. Using blocking calls on the main thread, for instance, will freeze the UI and can lead to an "Application Not Responding" (ANR) error. Blocking is simple but can be inefficient and should be avoided for long-running operations.
+- **Blocking**: A blocking operation stops the thread's execution completely until the operation is finished. While the thread is blocked, it cannot do any other work. Using blocking calls on the main thread, for instance, will freeze the UI and can lead to an "Application Not Responding" (ANR) error. Blocking is simple but can be inefficient and should be avoided for long-running operations.
 
 In summary, suspending is a cooperative mechanism that allows a thread to be shared among many coroutines, while blocking is a more traditional, exclusive approach where one thread is dedicated to a single task.
 
-Launch vs Async in Kotlin Coroutines
+---
 
-launch and async are coroutine builders used to start a new coroutine. The key difference lies in how they handle their return value and the purpose they serve.
+## Launch vs Async in Kotlin Coroutines
 
-    launch: This is a "fire-and-forget" coroutine builder. It returns a Job object, which represents the coroutine's lifecycle and allows you to cancel or wait for its completion. launch is used for tasks that don't need to return a result to the caller, such as updating a database, logging, or performing a UI-related action. It's a non-blocking way to start a task.
+`launch` and `async` are coroutine builders used to start a new coroutine. The key difference lies in how they handle their return value and the purpose they serve.
 
-    async: This coroutine builder is used for tasks that need to return a result. It returns a Deferred<T> object, which is a lightweight non-blocking future. You can retrieve the result of the computation by calling .await() on the Deferred object. This function suspends the coroutine until the result is available. async is ideal for performing multiple asynchronous tasks in parallel and then waiting for all their results.
+- **launch**: This is a "fire-and-forget" coroutine builder. It returns a `Job` object, which represents the coroutine's lifecycle and allows you to cancel or wait for its completion. `launch` is used for tasks that don't need to return a result to the caller, such as updating a database, logging, or performing a UI-related action. It's a non-blocking way to start a task.
 
-Analogy: Think of launch as sending an email—you send it and don't wait for a reply. async is like asking a question—you ask it and then wait for an answer.
+- **async**: This coroutine builder is used for tasks that need to return a result. It returns a `Deferred<T>` object, which is a lightweight non-blocking future. You can retrieve the result of the computation by calling `.await()` on the `Deferred` object. This function suspends the coroutine until the result is available. `async` is ideal for performing multiple asynchronous tasks in parallel and then waiting for all their results.
 
-internal visibility modifier in Kotlin
+**Analogy**: Think of `launch` as sending an email—you send it and don't wait for a reply. `async` is like asking a question—you ask it and then wait for an answer.
 
-The internal visibility modifier in Kotlin restricts the visibility of a declaration to the current module. A module is a set of Kotlin files that are compiled together, such as:
+---
 
-    An Android Studio module.
+## internal visibility modifier in Kotlin
 
-    A Maven or Gradle project.
+The `internal` visibility modifier in Kotlin restricts the visibility of a declaration to the current module. A module is a set of Kotlin files that are compiled together, such as:
 
-    A set of files compiled by one kotlinc invocation.
+- An Android Studio module.
+- A Maven or Gradle project.
+- A set of files compiled by one `kotlinc` invocation.
 
-If you declare a class, function, or property as internal, it can be accessed from any file within the same module, but it's not visible to code outside of that module. This is useful for encapsulating implementation details within a project without exposing them to other projects or libraries.
+If you declare a class, function, or property as `internal`, it can be accessed from any file within the same module, but it's not visible to code outside of that module. This is useful for encapsulating implementation details within a project without exposing them to other projects or libraries.
 
-Example:
-Kotlin
+**Example:**
 
+```kotlin
 // Module 'app-module'
 internal class InternalService {
     internal fun doInternalWork() {
         // ...
     }
 }
+```
 
-In another module, say feature-module, you would not be able to access InternalService or doInternalWork().
+In another module, say `feature-module`, you would not be able to access `InternalService` or `doInternalWork()`.
 
-open keyword in Kotlin
+---
 
-The open keyword in Kotlin is used to make a class or a class member (property or function) open for inheritance. By default, all classes and members in Kotlin are final, which means they cannot be subclassed or overridden. This is a design choice to promote composition over inheritance and prevent unexpected behavior caused by subclassing.
+## open keyword in Kotlin
 
-To allow a class to be extended or a member to be overridden, you must explicitly mark it with the open keyword.
+The `open` keyword in Kotlin is used to make a class or a class member (property or function) open for inheritance. By default, all classes and members in Kotlin are `final`, which means they cannot be subclassed or overridden. This is a design choice to promote composition over inheritance and prevent unexpected behavior caused by subclassing.
 
-Example:
-Kotlin
+To allow a class to be extended or a member to be overridden, you must explicitly mark it with the `open` keyword.
 
+**Example:**
+
+```kotlin
 // This class can be inherited
 open class Animal {
     // This function can be overridden
@@ -155,86 +172,99 @@ class Dog : Animal() {
         println("Woof!")
     }
 }
+```
 
-lateinit vs lazy in Kotlin
+---
 
-lateinit and lazy are both ways to initialize a non-null property in Kotlin at a later point, but they serve different purposes and have distinct characteristics.
-Feature	lateinit	lazy
-Purpose	Used when you know the property will be initialized before its first use, but its value cannot be set in the constructor. Common for dependency injection.	Used for a property whose value is expensive to create and you want to initialize it only when it's first accessed.
-Type	Can only be used with var (mutable) properties.	Can only be used with val (immutable) properties.
-Nullability	Must be a non-nullable type. No null check is needed, but an exception will be thrown if accessed before initialization.	The property is non-nullable and guaranteed to be initialized on first access.
-Thread Safety	Not thread-safe by default.	Thread-safe by default. The lazy delegate provides different modes (SYNCHRONIZED, PUBLICATION, NONE) to control this.
-Usage Example	lateinit var myService: MyService	val myExpensiveObject: SomeObject by lazy { SomeObject() }
+## lateinit vs lazy in Kotlin
 
-Summary: Use lateinit for mutable properties that will be initialized externally, and lazy for immutable, expensive-to-create properties that you want to initialize on demand.
+`lateinit` and `lazy` are both ways to initialize a non-null property in Kotlin at a later point, but they serve different purposes and have distinct characteristics.
 
-What is Multidex in Android?
+| Feature          | `lateinit`                                      | `lazy`                                           |
+|------------------|-------------------------------------------------|--------------------------------------------------|
+| **Purpose**      | Used when you know the property will be initialized before its first use, but its value cannot be set in the constructor. Common for dependency injection. | Used for a property whose value is expensive to create and you want to initialize it only when it's first accessed. |
+| **Type**         | Can only be used with `var` (mutable) properties. | Can only be used with `val` (immutable) properties. |
+| **Nullability**  | Must be a non-nullable type. No null check is needed, but an exception will be thrown if accessed before initialization. | The property is non-nullable and guaranteed to be initialized on first access. |
+| **Thread Safety**| Not thread-safe by default.                     | Thread-safe by default. The lazy delegate provides different modes (`SYNCHRONIZED`, `PUBLICATION`, `NONE`) to control this. |
+| **Usage Example**| `lateinit var myService: MyService`             | `val myExpensiveObject: SomeObject by lazy { SomeObject() }` |
+
+**Summary**: Use `lateinit` for mutable properties that will be initialized externally, and `lazy` for immutable, expensive-to-create properties that you want to initialize on demand.
+
+---
+
+## What is Multidex in Android?
 
 Multidex is a mechanism in Android that allows an app to use more than 65,536 method references. This limit is due to the Dalvik Executable (DEX) file format, which has a 16-bit field for indexing methods.
 
 When an app grows in size and complexity—due to its own code, libraries, and frameworks—it can exceed this method count limit. When this happens, the compiler will fail with an error. Multidex solves this by generating multiple DEX files for the app. The primary DEX file contains the initial code and a reference to load additional DEX files, allowing the app to bypass the 65k limit.
 
-You enable it by adding multiDexEnabled true to your app-level build.gradle file.
+You enable it by adding `multiDexEnabled true` to your app-level `build.gradle` file.
 
-How does the Android Push Notification system work?
+---
+
+## How does the Android Push Notification system work?
 
 The Android Push Notification system works through a chain of communication between your app server, a cloud messaging service, and the user's device. Here's the general flow:
 
-    Registration: When a user's device registers with your app, the app's backend server sends a request to a cloud messaging service, such as Firebase Cloud Messaging (FCM), to obtain a unique registration token for that device.
+1. **Registration**: When a user's device registers with your app, the app's backend server sends a request to a cloud messaging service, such as Firebase Cloud Messaging (FCM), to obtain a unique registration token for that device.
 
-    Message Creation: Your app server or a third-party server decides to send a push notification. It creates a message payload containing the notification content (title, body, etc.) and the device's unique registration token.
+2. **Message Creation**: Your app server or a third-party server decides to send a push notification. It creates a message payload containing the notification content (title, body, etc.) and the device's unique registration token.
 
-    Sending: The app server sends the message payload to the cloud messaging service.
+3. **Sending**: The app server sends the message payload to the cloud messaging service.
 
-    Delivery: The cloud messaging service (FCM) receives the message and pushes it to the target Android device via a persistent connection. This service is part of the Android OS and is highly optimized to handle notifications efficiently, even when the device is in a low-power state.
+4. **Delivery**: The cloud messaging service (FCM) receives the message and pushes it to the target Android device via a persistent connection. This service is part of the Android OS and is highly optimized to handle notifications efficiently, even when the device is in a low-power state.
 
-    Reception: The Android OS receives the message. If the app is in the background, the OS displays the notification in the notification bar. If the app is in the foreground, the message is delivered directly to your app's code for you to handle programmatically.
+5. **Reception**: The Android OS receives the message. If the app is in the background, the OS displays the notification in the notification bar. If the app is in the foreground, the message is delivered directly to your app's code for you to handle programmatically.
 
-How does the Kotlin Multiplatform work?
+---
+
+## How does the Kotlin Multiplatform work?
 
 Kotlin Multiplatform (KMP) is a technology by JetBrains that allows developers to share code across multiple platforms while keeping the user interface (UI) native. It works by having a core "common" module where you write business logic, networking, data handling, and other non-UI code in Kotlin.
 
 KMP uses a set of compilers to translate this common Kotlin code into platform-specific binaries:
 
-    Kotlin/JVM: Compiles Kotlin code into JVM bytecode for Android, desktop, and backend applications.
+- **Kotlin/JVM**: Compiles Kotlin code into JVM bytecode for Android, desktop, and backend applications.
+- **Kotlin/Native**: Compiles Kotlin code into native binaries for platforms like iOS, macOS, watchOS, and Linux. This allows direct access to platform APIs and interoperability with languages like Swift and Objective-C.
+- **Kotlin/JS**: Compiles Kotlin code to JavaScript for web applications.
 
-    Kotlin/Native: Compiles Kotlin code into native binaries for platforms like iOS, macOS, watchOS, and Linux. This allows direct access to platform APIs and interoperability with languages like Swift and Objective-C.
+For platform-specific features that can't be implemented in the common module (e.g., accessing a device's camera or a platform-specific API), KMP uses the `expect`/`actual` mechanism. You declare an `expect` function or class in the common module, and then provide a platform-specific `actual` implementation in each platform module. This allows you to write the same high-level logic and call the appropriate native implementation transparently.
 
-    Kotlin/JS: Compiles Kotlin code to JavaScript for web applications.
+---
 
-For platform-specific features that can't be implemented in the common module (e.g., accessing a device's camera or a platform-specific API), KMP uses the expect/actual mechanism. You declare an expect function or class in the common module, and then provide a platform-specific actual implementation in each platform module. This allows you to write the same high-level logic and call the appropriate native implementation transparently.
+## What is a ViewModel and how is it useful?
 
-What is a ViewModel and how is it useful?
+A `ViewModel` is a class from the Android Jetpack Architecture Components library. It is designed to store and manage UI-related data in a lifecycle-aware way.
 
-A ViewModel is a class from the Android Jetpack Architecture Components library. It is designed to store and manage UI-related data in a lifecycle-aware way.
+Its primary purpose is to survive configuration changes, such as screen rotations. When an Activity or Fragment is destroyed and recreated due to a configuration change, the `ViewModel` instance is retained. This prevents you from losing the data you've fetched or processed, and avoids unnecessary network calls or database queries.
 
-Its primary purpose is to survive configuration changes, such as screen rotations. When an Activity or Fragment is destroyed and recreated due to a configuration change, the ViewModel instance is retained. This prevents you from losing the data you've fetched or processed, and avoids unnecessary network calls or database queries.
+**Key advantages**:
 
-Key advantages:
+- **Lifecycle Awareness**: It can observe the lifecycle of a Fragment or Activity and hold data until the associated Activity or Fragment is completely finished (e.g., the user navigates away).
+- **Separation of Concerns**: It separates the UI logic (Activity/Fragment) from the business logic and data handling, making the code cleaner, more testable, and easier to maintain.
+- **Data Persistence**: It ensures that data is not lost on configuration changes, providing a better user experience.
 
-    Lifecycle Awareness: It can observe the lifecycle of a Fragment or Activity and hold data until the associated Activity or Fragment is completely finished (e.g., the user navigates away).
+---
 
-    Separation of Concerns: It separates the UI logic (Activity/Fragment) from the business logic and data handling, making the code cleaner, more testable, and easier to maintain.
+## Is it possible to force Garbage Collection in Android?
 
-    Data Persistence: It ensures that data is not lost on configuration changes, providing a better user experience.
-
-Is it possible to force Garbage Collection in Android?
-
-No, you cannot truly force garbage collection (GC) in Android. You can only suggest it to the system by calling System.gc() or Runtime.getRuntime().gc().
+No, you cannot truly force garbage collection (GC) in Android. You can only suggest it to the system by calling `System.gc()` or `Runtime.getRuntime().gc()`.
 
 However, these calls are just a hint, and the Android runtime is highly optimized to decide when the best time to run the GC is. Calling it yourself is generally discouraged as it can introduce performance issues, like temporary UI stuttering, by unexpectedly interrupting the system's operations. The system's garbage collector is designed to run automatically and efficiently when needed, such as when heap memory is getting low.
 
 A better practice is to focus on avoiding memory leaks by properly managing object lifecycles, and allowing the system to handle memory cleanup on its own.
 
-What is a JvmStatic Annotation in Kotlin?
+---
 
-The @JvmStatic annotation in Kotlin is used to expose a function or property defined inside a companion object or a named object as a static member to Java code.
+## What is a JvmStatic Annotation in Kotlin?
 
-In Kotlin, companion objects and named objects are compiled as singleton classes. Their members are instance methods of these singleton classes, not true static methods. @JvmStatic instructs the Kotlin compiler to generate a true static method for a function or a static field for a property in the bytecode, making it directly callable from Java without needing the INSTANCE singleton reference.
+The `@JvmStatic` annotation in Kotlin is used to expose a function or property defined inside a companion object or a named object as a static member to Java code.
 
-Example:
-Kotlin
+In Kotlin, companion objects and named objects are compiled as singleton classes. Their members are instance methods of these singleton classes, not true static methods. `@JvmStatic` instructs the Kotlin compiler to generate a true static method for a function or a static field for a property in the bytecode, making it directly callable from Java without needing the `INSTANCE` singleton reference.
 
+**Example:**
+
+```kotlin
 // Kotlin code
 class MyClass {
     companion object {
@@ -248,16 +278,19 @@ class MyClass {
 // Java code
 // Can be called directly without the `INSTANCE`
 MyClass.myStaticMethod();
+```
 
-init block in Kotlin
+---
 
-The init block in Kotlin is a special block of code that is executed as part of a class's primary constructor. It's used to put initialization code that can't be placed directly in the primary constructor's parameter list.
+## init block in Kotlin
 
-When a new instance of a class is created, the init block runs immediately after the primary constructor's parameters are processed. If a class has multiple init blocks, they are executed sequentially in the order they appear in the class body.
+The `init` block in Kotlin is a special block of code that is executed as part of a class's primary constructor. It's used to put initialization code that can't be placed directly in the primary constructor's parameter list.
 
-Example:
-Kotlin
+When a new instance of a class is created, the `init` block runs immediately after the primary constructor's parameters are processed. If a class has multiple `init` blocks, they are executed sequentially in the order they appear in the class body.
 
+**Example:**
+
+```kotlin
 class User(name: String) {
     val username: String
 
@@ -271,16 +304,19 @@ class User(name: String) {
 // Creating an instance will print the message
 val user = User("john doe")
 // Output: User 'JOHN DOE' has been created.
+```
 
-JvmField Annotation in Kotlin
+---
 
-The @JvmField annotation in Kotlin is used to expose a property as a public field in Java, rather than as a property with generated getters and setters.
+## JvmField Annotation in Kotlin
 
-By default, Kotlin properties are compiled with getters (for val properties) and both getters and setters (for var properties). This is part of Kotlin's property-based design. When you need to interact with a Java library that expects a public field, or for performance-critical scenarios where direct field access is more efficient, @JvmField can be used.
+The `@JvmField` annotation in Kotlin is used to expose a property as a public field in Java, rather than as a property with generated getters and setters.
 
-Example:
-Kotlin
+By default, Kotlin properties are compiled with getters (for `val` properties) and both getters and setters (for `var` properties). This is part of Kotlin's property-based design. When you need to interact with a Java library that expects a public field, or for performance-critical scenarios where direct field access is more efficient, `@JvmField` can be used.
 
+**Example:**
+
+```kotlin
 // Kotlin code
 class MyData {
     // This will be a public field in Java
@@ -292,34 +328,37 @@ class MyData {
 // Direct access to the field, no getter is generated
 MyData myData = new MyData();
 String name = myData.myName;
+```
 
 This annotation can only be used on non-private properties, and it cannot be used with properties that have custom getters or setters.
 
-singleTask launchMode in Android
+---
 
-singleTask is an Android Activity launch mode. It dictates how a new instance of an activity is created and managed within the Android task stack.
+## singleTask launchMode in Android
 
-When an activity with singleTask launch mode is started:
+`singleTask` is an Android Activity launch mode. It dictates how a new instance of an activity is created and managed within the Android task stack.
 
-    The system searches for an existing instance of this activity in the current task stack.
+When an activity with `singleTask` launch mode is started:
 
-    If an instance exists, the system does not create a new one. Instead, it brings the existing instance to the top of the stack and calls its onNewIntent() method. All other activities on top of this instance in the stack are destroyed.
+- The system searches for an existing instance of this activity in the current task stack.
+- If an instance exists, the system does not create a new one. Instead, it brings the existing instance to the top of the stack and calls its `onNewIntent()` method. All other activities on top of this instance in the stack are destroyed.
+- If an instance does not exist, a new instance is created and placed at the top of the stack.
 
-    If an instance does not exist, a new instance is created and placed at the top of the stack.
+`singleTask` is useful for activities that should have only one instance running at a time, such as a main dashboard or home screen. It prevents the creation of duplicate instances and ensures a consistent user experience.
 
-singleTask is useful for activities that should have only one instance running at a time, such as a main dashboard or home screen. It prevents the creation of duplicate instances and ensures a consistent user experience.
+---
 
-Difference between == and === in Kotlin
+## Difference between == and === in Kotlin
 
-In Kotlin, == and === perform different types of equality checks.
+In Kotlin, `==` and `===` perform different types of equality checks.
 
-    == (Structural Equality): This operator checks if the content of two objects is the same. It is translated to a call to the .equals() method. For primitive types, it performs a simple value comparison. For data classes, == automatically checks for equality of all properties.
+- **`==` (Structural Equality)**: This operator checks if the content of two objects is the same. It is translated to a call to the `.equals()` method. For primitive types, it performs a simple value comparison. For data classes, `==` automatically checks for equality of all properties.
 
-    === (Referential Equality): This operator checks if two references point to the exact same object in memory. It's a strict identity comparison. For primitive types, === is the same as ==.
+- **`===` (Referential Equality)**: This operator checks if two references point to the exact same object in memory. It's a strict identity comparison. For primitive types, `===` is the same as `==`.
 
-Example:
-Kotlin
+**Example:**
 
+```kotlin
 val a = "hello"
 val b = "hello"
 val c = a
@@ -332,16 +371,19 @@ val list2 = listOf(1, 2, 3)
 
 println(list1 == list2) // true (structural equality, content is the same)
 println(list1 === list2) // false (referential equality, they are different objects in memory)
+```
 
-JvmOverloads Annotation in Kotlin
+---
 
-The @JvmOverloads annotation in Kotlin is used to improve interoperability with Java. When you have a Kotlin function with default parameter values, the Kotlin compiler generates only a single function with all parameters. This can be problematic for Java callers, who can't use the default values.
+## JvmOverloads Annotation in Kotlin
 
-By adding @JvmOverloads, you instruct the Kotlin compiler to generate multiple overloaded methods for that function in the bytecode. Each overloaded method will have a different number of parameters, corresponding to the default values you've provided. This allows Java code to call the function with any number of parameters, just like a standard overloaded Java method.
+The `@JvmOverloads` annotation in Kotlin is used to improve interoperability with Java. When you have a Kotlin function with default parameter values, the Kotlin compiler generates only a single function with all parameters. This can be problematic for Java callers, who can't use the default values.
 
-Example:
-Kotlin
+By adding `@JvmOverloads`, you instruct the Kotlin compiler to generate multiple overloaded methods for that function in the bytecode. Each overloaded method will have a different number of parameters, corresponding to the default values you've provided. This allows Java code to call the function with any number of parameters, just like a standard overloaded Java method.
 
+**Example:**
+
+```kotlin
 // Kotlin code
 class Greeter {
     @JvmOverloads
@@ -355,18 +397,21 @@ Greeter greeter = new Greeter();
 greeter.sayHello(); // Calls sayHello(String, String) with default values
 greeter.sayHello("Hi"); // Calls sayHello(String, String) with "Hi" and default name
 greeter.sayHello("Hi", "John"); // Calls sayHello(String, String)
+```
 
-Why is it recommended to use only the default constructor to create a Fragment?
+---
+
+## Why is it recommended to use only the default constructor to create a Fragment?
 
 It is strongly recommended to use only the default (no-argument) constructor to create a Fragment because of how the Android system handles fragment lifecycle and state restoration.
 
-When Android needs to recreate an Activity (e.g., after a configuration change or process death), it also needs to recreate its Fragments. The system does this by using reflection to find and call the fragment's default constructor. If you use a parameterized constructor, the system won't know how to pass the necessary arguments, leading to a Fragment.InstantiationException and a crash.
+When Android needs to recreate an Activity (e.g., after a configuration change or process death), it also needs to recreate its Fragments. The system does this by using reflection to find and call the fragment's default constructor. If you use a parameterized constructor, the system won't know how to pass the necessary arguments, leading to a `Fragment.InstantiationException` and a crash.
 
-To pass data to a Fragment, the correct and safe approach is to use a Bundle and the setArguments() method. This Bundle is automatically saved and restored by the system, ensuring that the data is available when the fragment is recreated.
+To pass data to a Fragment, the correct and safe approach is to use a `Bundle` and the `setArguments()` method. This Bundle is automatically saved and restored by the system, ensuring that the data is available when the fragment is recreated.
 
-Best Practice:
-Kotlin
+**Best Practice:**
 
+```kotlin
 class MyFragment : Fragment() {
     companion object {
         fun newInstance(data: String): MyFragment {
@@ -378,46 +423,639 @@ class MyFragment : Fragment() {
         }
     }
 }
+```
 
-Why do we need to call setContentView() in onCreate() of Activity class?
+---
 
-You need to call setContentView() in the onCreate() method of an Activity because it's the method that sets the user interface layout for the activity.
+## Why do we need to call setContentView() in onCreate() of Activity class?
 
-The onCreate() method is the first lifecycle callback, called when the activity is being created. It's the ideal place to perform all your essential setup, and setting the content view is a critical part of that. The setContentView() method takes a layout resource ID and inflates the XML layout file, attaching it to the activity's window. Without this call, your activity would have no UI to display.
+You need to call `setContentView()` in the `onCreate()` method of an Activity because it's the method that sets the user interface layout for the activity.
 
-When only onDestroy is called for an activity without onPause() and onStop()?
+The `onCreate()` method is the first lifecycle callback, called when the activity is being created. It's the ideal place to perform all your essential setup, and setting the content view is a critical part of that. The `setContentView()` method takes a layout resource ID and inflates the XML layout file, attaching it to the activity's window. Without this call, your activity would have no UI to display.
 
-It is rare for an Activity's onDestroy() to be called without onPause() and onStop() first, as the normal lifecycle flow is onPause() -> onStop() -> onDestroy(). However, this can happen when the Android system decides to kill the app's process entirely for memory-reclamation purposes.
+---
 
-This scenario, often referred to as "process death," can occur when the app has been in the background for a long time and the system needs to free up resources for other apps. In this case, the system doesn't bother with the orderly shutdown of each component's lifecycle methods (onPause(), onStop()) and simply terminates the process.
+## When only onDestroy is called for an activity without onPause() and onStop()?
 
-This is a key reason why you should always save important state and data in onPause() or onStop() and not rely on onDestroy() to be called.
+It is rare for an Activity's `onDestroy()` to be called without `onPause()` and `onStop()` first, as the normal lifecycle flow is `onPause()` → `onStop()` → `onDestroy()`. However, this can happen when the Android system decides to kill the app's process entirely for memory-reclamation purposes.
 
+This scenario, often referred to as "process death," can occur when the app has been in the background for a long time and the system needs to free up resources for other apps. In this case, the system doesn't bother with the orderly shutdown of each component's lifecycle methods (`onPause()`, `onStop()`) and simply terminates the process.
 
+This is a key reason why you should always save important state and data in `onPause()` or `onStop()` and not rely on `onDestroy()` to be called.
 
+---
+
+## Master Kotlin Coroutines
+
+### Suspending vs. Blocking in Kotlin Coroutines
+
+Suspending and blocking are two distinct ways to handle concurrent operations. The key difference lies in how they manage the underlying thread.
+
+- **Suspending**: A suspending function (marked with the `suspend` keyword) can pause its execution without blocking the thread it's running on. When a suspending function needs to wait for a result (e.g., a network call or a database query), it releases the thread to perform other work. When the result is ready, the coroutine can resume on the same or a different thread. This is a cooperative mechanism that allows a single thread to be shared by many coroutines, making it highly efficient for I/O-bound tasks.
+
+- **Blocking**: A blocking operation completely stops the thread's execution until the task is complete. While the thread is blocked, it cannot perform any other work. If a blocking call is made on the main thread, the UI will freeze, potentially leading to an "Application Not Responding" (ANR) error. Blocking is simple but can be inefficient and should be avoided for long-running operations.
+
+In short, a suspending function is a non-blocking alternative to a blocking function, allowing for a more efficient and responsive application.
+
+---
+
+### Launch vs. Async in Kotlin Coroutines
+
+`launch` and `async` are both coroutine builders used to start a new coroutine, but they serve different purposes based on their return type.
+
+- **launch**: This builder is used for "fire-and-forget" tasks that don't need to return a result to the caller. It returns a `Job` object, which represents the coroutine's lifecycle. A Job can be used to cancel or wait for the coroutine to complete, but it doesn't hold a value. Use `launch` for tasks like updating UI, logging, or saving data to a local database.
+
+- **async**: This builder is used when the coroutine is expected to return a result. It returns a `Deferred<T>` object, which is a non-blocking future. You can get the result by calling the `await()` function on the `Deferred` object. This call suspends the current coroutine until the result is available. Use `async` when you need to perform multiple asynchronous tasks in parallel and then process their results, such as making two concurrent network calls.
+
+**Analogy**: Think of `launch` as sending an email—you send it and don't necessarily wait for a reply. `async` is like asking a question—you ask it and then wait for an answer.
+
+---
+
+### Dispatchers in Kotlin Coroutines
+
+Dispatchers are a key part of Kotlin Coroutines. A Dispatcher determines which thread or thread pool the coroutine will use for its execution. They are a crucial component for managing concurrency and ensuring your code runs on the correct thread.
+
+Kotlin provides three main dispatchers:
+
+- **`Dispatchers.Main`**: This dispatcher is tied to the main thread of an Android application. It should be used for all UI-related work, such as updating views or handling user input. Performing long-running operations on this dispatcher will freeze the UI.
+
+- **`Dispatchers.IO`**: This dispatcher is optimized for I/O-intensive tasks, like network calls, reading or writing to a file, or database operations. It uses a thread pool that is suitable for a large number of blocking I/O operations.
+
+- **`Dispatchers.Default`**: This dispatcher is optimized for CPU-intensive tasks, such as sorting a large list, complex calculations, or image processing. It uses a shared thread pool with a number of threads equal to the number of CPU cores.
+
+You can specify a dispatcher using the `withContext` or `launch` builders.
+
+---
+
+### coroutineScope vs. supervisorScope
+
+`coroutineScope` and `supervisorScope` are builders used to create a new coroutine scope with structured concurrency. The primary difference is how they handle coroutine failures.
+
+- **coroutineScope**: This builder creates a new scope and waits for all of its child coroutines to complete before it completes itself. If any of the child coroutines fails with an exception, the exception is immediately propagated to the parent coroutine, which then cancels all its other children. This "fail-fast" behavior ensures that a failure in one part of the scope brings down the entire scope.
+
+- **supervisorScope**: This builder is similar to `coroutineScope`, but it has a key distinction: a failure in one of its children does not cause the supervisor scope to fail. Instead, the exception is propagated only to the failing child's parent, and other children in the scope continue to run. This is useful when you have independent tasks within a scope, and you want a failure in one to not affect the others.
+
+**Analogy**: Think of `coroutineScope` as a team project where if one person fails, the whole project is abandoned. `supervisorScope` is like a team where if one person fails, a supervisor handles their error, but the rest of the team continues working.
+
+---
+
+### Suspend Function in Kotlin Coroutines
+
+A suspend function is a function that can be paused and resumed at a later time. It is a fundamental building block of Kotlin Coroutines. The `suspend` keyword is a signal to the compiler that this function can execute long-running operations in a non-blocking way.
+
+`suspend` functions can only be called from within a coroutine or another suspend function. This ensures that the code's asynchronous nature is explicit and properly managed. When a suspend function is called, it might "suspend" the coroutine, freeing the thread, and will "resume" when its work is done. This makes it possible to write asynchronous code that looks sequential and easy to read.
+
+**Example:**
+
+```kotlin
+// This function suspends the coroutine until the network call is complete
+suspend fun fetchUserData(): User {
+    // This is a suspend function from a library
+    return apiService.getUser()
+}
+```
+
+---
+
+### Kotlin withContext vs. async-await
+
+Both `withContext` and `async-await` are used to switch between dispatchers and execute a block of code, but they serve different purposes.
+
+- **withContext**: This is a direct, sequential way to switch the coroutine's context. The block of code inside `withContext` is executed on the specified dispatcher, and the calling coroutine is suspended until the block completes. The result of the block is returned immediately. `withContext` is ideal for moving a single, sequential operation (like a network call) to a different thread.
+
+- **async-await**: This is used for parallel execution. `async` starts a new coroutine on the specified dispatcher and returns a `Deferred` object immediately. The calling coroutine continues to run. When you need the result, you call `await()` on the `Deferred` object, which suspends the coroutine until the result is ready. `async-await` is perfect for concurrent operations.
+
+**Example:**
+
+```kotlin
+// withContext (sequential)
+suspend fun fetchUserAndPost() {
+    val user = withContext(Dispatchers.IO) { api.getUser() }
+    val post = withContext(Dispatchers.IO) { api.getPost(user.id) }
+    // ...
+}
+
+// async-await (parallel)
+suspend fun fetchUserAndPostConcurrently() {
+    val userDeferred = async(Dispatchers.IO) { api.getUser() }
+    val postDeferred = async(Dispatchers.IO) { api.getPost() }
+
+    val user = userDeferred.await()
+    val post = postDeferred.await()
+    // ...
+}
+```
+
+---
+
+### CoroutineContext in Kotlin
+
+A `CoroutineContext` is a set of elements that define the behavior of a coroutine. It acts as a collection of key-value pairs where each key is a `CoroutineContext.Key` and the value is the corresponding `CoroutineContext.Element`.
+
+The main elements of a `CoroutineContext` are:
+
+- **Job**: Manages the coroutine's lifecycle and allows for cancellation.
+- **Dispatcher**: Determines the thread or thread pool on which the coroutine will run.
+- **CoroutineName**: A helpful debugging tool for naming a coroutine.
+- **CoroutineExceptionHandler**: Catches uncaught exceptions in a coroutine.
+
+A `CoroutineContext` can be combined using the `+` operator. For example, `Dispatchers.IO + Job()` creates a new context. This allows for granular control over a coroutine's behavior, making it highly flexible.
+
+---
+
+### Callback to Coroutines in Kotlin
+
+You can convert a callback-based API into a coroutine-friendly, suspending function using a technique called `suspendCoroutine`. This function, provided by the `kotlinx.coroutines` library, suspends the current coroutine and provides a `Continuation` object. You can then use this `Continuation` to resume the coroutine with a result or an exception once the callback is triggered.
+
+**Example:**
+
+```kotlin
+// Old callback-based API
+fun fetchData(callback: (Result) -> Unit) { /* ... */ }
+
+// Wrapping with suspendCoroutine
+suspend fun fetchDataCoroutines(): Result = suspendCoroutine { continuation ->
+    fetchData { result ->
+        continuation.resume(result) // Resumes the coroutine with the result
+    }
+}
+```
+
+While `suspendCoroutine` is powerful, libraries often provide dedicated coroutine-friendly APIs (like Retrofit's suspend functions).
+
+---
+
+### Retrofit with Kotlin Coroutines
+
+Retrofit, a popular Android networking library, has excellent support for Kotlin Coroutines. Instead of using `Call` objects and callbacks, you can simply add the `suspend` keyword to your interface functions.
+
+When Retrofit encounters a suspend function, it automatically handles the asynchronous network call in a coroutine-friendly way. It performs the I/O operation on a background thread (usually in `Dispatchers.IO`) and returns the result, suspending the coroutine until the call is complete. This makes your network code much cleaner, more readable, and sequential.
+
+**Example:**
+
+```kotlin
+interface ApiService {
+    // Suspend function that makes a network call
+    @GET("users/{id}")
+    suspend fun getUser(@Path("id") userId: String): User
+}
+
+// Calling the suspend function from a ViewModel
+viewModelScope.launch {
+    try {
+        val user = apiService.getUser("123")
+        // Update UI
+    } catch (e: Exception) {
+        // Handle error
+    }
+}
+```
+
+---
+
+### Parallel Multiple Network Calls Using Kotlin Coroutines
+
+Kotlin Coroutines make parallel network calls easy and efficient using the `async-await` pattern. Instead of making one network call and waiting for it to finish before starting the next, you can launch multiple `async` coroutines in parallel.
+
+The process is as follows:
+
+1. Launch a coroutine using a coroutine scope (e.g., `viewModelScope`).
+2. Use `async` for each network call that you want to run in parallel. Each `async` block will return a `Deferred` object.
+3. Call `await()` on each `Deferred` object to get the results. The `await()` function will suspend the current coroutine until the result is available. Because the network calls were started in parallel, this step is non-blocking and efficient.
+
+**Example:**
+
+```kotlin
+viewModelScope.launch {
+    try {
+        val userDeferred = async(Dispatchers.IO) { apiService.getUser("123") }
+        val postsDeferred = async(Dispatchers.IO) { apiService.getUserPosts("123") }
+
+        val user = userDeferred.await()
+        val posts = postsDeferred.await()
+        // Process results
+    } catch (e: Exception) {
+        // Handle error
+    }
+}
+```
+
+---
+
+### Room Database with Kotlin Coroutines
+
+Room, the Android Jetpack persistence library, has built-in support for Kotlin Coroutines. By marking your DAO (Data Access Object) functions with the `suspend` keyword, Room automatically handles the database operation on a background thread.
+
+This simplifies your database access code and ensures that you don't perform long-running database queries on the main thread, preventing ANRs. Room's coroutine support makes your data layer code clean, sequential, and safe.
+
+**Example:**
+
+```kotlin
+@Dao
+interface UserDao {
+    @Query("SELECT * FROM user WHERE id = :userId")
+    suspend fun getUser(userId: Int): User
+
+    @Insert
+    suspend fun insertUser(user: User)
+}
+
+// Call from ViewModel
+viewModelScope.launch(Dispatchers.IO) {
+    val user = userDao.getUser(1)
+    // Update UI or process data
+}
+```
+
+---
+
+### Unit Testing ViewModel with Kotlin Coroutines and LiveData
+
+Unit testing a ViewModel that uses LiveData and coroutines requires a few specific tools to manage threading and lifecycle.
+
+- **TestCoroutineDispatcher**: This is a special dispatcher from `kotlinx.coroutines.test` that allows you to control the execution of your coroutines in a predictable, synchronous manner. You can use methods like `runBlockingTest` or `advanceUntilIdle` to ensure all coroutines have completed before making assertions.
+
+- **InstantTaskExecutorRule**: This JUnit rule from AndroidX Test is used to make LiveData operations happen synchronously. By default, LiveData works on a background thread, which can make testing difficult. This rule forces all LiveData tasks to execute on the same thread, making tests deterministic.
+
+- **Dependency Injection**: Use mock objects for your repository or data source dependencies. This isolates the ViewModel and allows you to test its specific logic without relying on real network or database calls.
+
+By combining these tools, you can write reliable, repeatable unit tests for your ViewModel that correctly handle the complexities of LiveData and coroutines.
+
+---
+
+## What is Coroutines?
 
 Coroutines are a concurrency design pattern in Kotlin that allows you to write asynchronous, non-blocking code in a sequential and easy-to-read manner. They are a lightweight alternative to traditional threads.
 
-Key Concepts
+### Key Concepts
 
-Lightweight
+#### Lightweight
 
 Coroutines are managed by the Kotlin runtime, not the operating system, making them much less resource-intensive than threads. You can run thousands of coroutines on a single thread, whereas creating a new thread for every task would quickly consume system memory and lead to performance issues.
 
-Structured Concurrency
+#### Structured Concurrency
 
-Coroutines promote structured concurrency, a programming paradigm that organizes concurrent tasks in a hierarchy. When you launch a coroutine, it runs within a CoroutineScope. This scope acts as a parent for the coroutine, and when the scope is canceled, all child coroutines are also canceled. This prevents resource leaks and simplifies error handling.
+Coroutines promote structured concurrency, a programming paradigm that organizes concurrent tasks in a hierarchy. When you launch a coroutine, it runs within a `CoroutineScope`. This scope acts as a parent for the coroutine, and when the scope is canceled, all child coroutines are also canceled. This prevents resource leaks and simplifies error handling.
 
-Suspending Functions
+#### Suspending Functions
 
-The core of coroutines are suspending functions, marked with the suspend keyword. A suspending function can be paused and resumed at a later time. When a suspend function needs to wait for a result (e.g., from a network request), it suspends the coroutine, freeing up the underlying thread to do other work. When the result is ready, the coroutine can resume its execution. This non-blocking behavior is a key advantage.
+The core of coroutines are suspending functions, marked with the `suspend` keyword. A suspending function can be paused and resumed at a later time. When a suspend function needs to wait for a result (e.g., from a network request), it suspends the coroutine, freeing up the underlying thread to do other work. When the result is ready, the coroutine can resume its execution. This non-blocking behavior is a key advantage.
 
-Coroutines vs. Threads
+### Coroutines vs. Threads
 
-Feature	Coroutines	Threads
-Execution	Cooperative	Preemptive
-Resource Usage	Lightweight	Heavyweight
-Cancellation	Structured and easy	Difficult and error-prone
-Scope	Coroutine Scope	OS-level process
+| Feature           | Coroutines                         | Threads                          |
+|-------------------|------------------------------------|----------------------------------|
+| **Execution**     | Cooperative                        | Preemptive                       |
+| **Resource Usage**| Lightweight                        | Heavyweight                      |
+| **Cancellation**  | Structured and easy                | Difficult and error-prone        |
+| **Scope**         | Coroutine Scope                    | OS-level process                 |
 
 While threads are managed by the operating system and are a unit of CPU execution, coroutines are managed by the application code and are a unit of work. Think of a thread as a physical assembly line in a factory, whereas a coroutine is a single task or item on that line. A few assembly lines can handle a vast number of tasks efficiently.
+
+--- 
+
+```markdown
+# withContext
+
+`withContext` is a suspending function in Kotlin Coroutines that allows you to change the `CoroutineContext` of the current coroutine. It’s primarily used to switch to a different thread or thread pool (a different `Dispatcher`) for a specific block of code and then return to the original context when the block is finished.
+
+### How It Works
+
+When you call `withContext`, it suspends the current coroutine. The code block you pass to `withContext` is then executed on the specified dispatcher. Once that block finishes and returns a result, the coroutine is resumed on its original context. This makes it an ideal tool for moving a long-running operation from a UI thread to a background thread without blocking the UI.
+
+The `withContext` function returns the result of the code block it executes.
+
+### Example
+
+Imagine you need to perform a network request and then update the UI. The network call is an I/O operation and should run on `Dispatchers.IO`, while the UI update must be on `Dispatchers.Main`. `withContext` handles this switch seamlessly.
+
+```kotlin
+suspend fun fetchUserDataAndDisplay() {
+    // Coroutine starts on Dispatchers.Main (or another context)
+    val user = withContext(Dispatchers.IO) {
+        // Now running on the I/O thread pool
+        // This is a suspend function, and the coroutine will suspend here
+        apiService.getUser("123")
+    }
+    // Automatically resumes on the original context (e.g., Dispatchers.Main)
+    // The UI is safe to update now
+    updateUI(user)
+}
+```
+
+### withContext vs. async
+
+While both can switch dispatchers, their primary purposes differ.
+
+| **withContext** | **async** |
+|------------------|-----------|
+| Best for a single, sequential operation. It’s a "suspending block" that ensures the operation completes before the rest of the code continues. | Best for running tasks in parallel. `async` launches a new coroutine that runs concurrently with the original one. You then use `await()` to get the result when needed. |
+
+---
+
+# Exception Handling in Coroutines
+
+Exception handling in Kotlin Coroutines follows a structured approach based on the coroutine hierarchy and structured concurrency. Unlike traditional thread-based systems where exceptions can be swallowed or lead to silent crashes, coroutines provide predictable and explicit mechanisms to deal with errors.
+
+### Exception Propagation
+
+When a coroutine throws an unhandled exception, it’s propagated up the coroutine hierarchy. The coroutine’s `Job` acts as its parent. When a child coroutine fails with an exception, the parent `Job` is immediately canceled. This cancellation then cascades to all other sibling coroutines, ensuring that all related tasks are stopped to prevent inconsistent state.
+
+This "fail-fast" behavior is the default and is a core part of structured concurrency. It prevents silent failures and helps in debugging.
+
+### Handling Exceptions with try-catch
+
+The most common and straightforward way to handle exceptions in a coroutine is by using a standard `try-catch` block. This is useful for handling exceptions from a specific section of code, such as a network or database call.
+
+```kotlin
+import kotlinx.coroutines.*
+
+fun main() = runBlocking {
+    val job = launch {
+        try {
+            // Code that might throw an exception
+            println("Making a network call...")
+            delay(500) // Simulate work
+            throw IllegalStateException("Network call failed!")
+        } catch (e: Exception) {
+            // Handle the exception
+            println("Caught exception: ${e.message}")
+        }
+    }
+    job.join()
+}
+```
+
+### The CoroutineExceptionHandler
+
+For handling exceptions that are not caught by a `try-catch` block, you can use a `CoroutineExceptionHandler`. This is an optional element you can add to a coroutine’s `CoroutineContext`. It acts as a global handler for a specific coroutine or a coroutine scope.
+
+When a child coroutine fails, the exception is passed to the `CoroutineExceptionHandler` if one is defined.
+
+```kotlin
+import kotlinx.coroutines.*
+
+fun main() = runBlocking {
+    val handler = CoroutineExceptionHandler { _, exception ->
+        println("Caught an unhandled exception: ${exception.message}")
+    }
+
+    val scope = CoroutineScope(Dispatchers.Main + Job() + handler)
+
+    scope.launch {
+        // This will be caught by the handler
+        throw IllegalArgumentException("Something went wrong!")
+    }
+
+    delay(1000)
+    scope.cancel()
+}
+```
+
+### Special Cases
+
+#### async and await()
+With `async`, exceptions are not immediately propagated. They are captured and stored inside the `Deferred` object. The exception is only re-thrown when you call `await()`. This allows you to handle exceptions at the point where you retrieve the result, which is useful for parallel operations.
+
+```kotlin
+val deferred = async {
+    throw IOException("Network error")
+}
+
+try {
+    deferred.await() // Exception is re-thrown here
+} catch (e: Exception) {
+    println("Caught exception on await: ${e.message}")
+}
+```
+
+#### SupervisorJob
+When using a `supervisorScope` or a `SupervisorJob`, an exception in a child coroutine does not cancel its siblings or its parent. This is useful for building isolated, independent tasks within a single scope where a failure in one shouldn’t affect the others. The exception is still propagated up and can be handled by a `CoroutineExceptionHandler` on the `SupervisorJob`.
+
+---
+
+### Practical Comparison: supervisorScope vs coroutineScope
+
+#### With `supervisorScope`
+```kotlin
+launch {
+    supervisorScope {
+        val usersDeferred = async { getUsers() }
+        val moreUsersDeferred = async { getMoreUsers() }
+
+        val users = try {
+            usersDeferred.await()
+        } catch (e: Exception) {
+            emptyList<User>()
+        }
+
+        val moreUsers = try {
+            moreUsersDeferred.await()
+        } catch (e: Exception) {
+            emptyList<User>()
+        }
+    }
+}
+```
+
+**Behavior**  
+- A failure in one child coroutine (e.g., `usersDeferred`) does not affect siblings or the parent scope.  
+- Exceptions are handled locally via `try-catch`, allowing other coroutines to continue.  
+✅ **Use Case**: Ideal for independent, parallel tasks (e.g., loading multiple unrelated data sources).
+
+---
+
+#### With `coroutineScope`
+```kotlin
+launch {
+    coroutineScope {
+        val usersDeferred = async { getUsers() }
+        val moreUsersDeferred = async { getMoreUsers() }
+
+        val users = try {
+            usersDeferred.await()
+        } catch (e: Exception) {
+            emptyList<User>()
+        }
+
+        val moreUsers = try {
+            moreUsersDeferred.await()
+        } catch (e: Exception) {
+            emptyList<User>()
+        }
+    }
+}
+```
+
+**Behavior**  
+- A failure in one child coroutine (e.g., `usersDeferred`) cancels all siblings and the parent scope.  
+- Even with `try-catch`, canceled coroutines (e.g., `moreUsersDeferred`) will throw `CancellationException`.  
+✅ **Use Case**: Best for interdependent operations (e.g., fetching primary data and metadata) where failure invalidates others.
+```
+
+
+```markdown
+### Kotlin Flow API
+
+The Kotlin Flow API is a powerful library for handling asynchronous data streams. It's built on top of coroutines, providing a reactive programming paradigm that's both efficient and easy to reason about. A **`Flow`** represents a stream of asynchronously computed values, similar to an RxJava `Observable`, but it's cold by default.
+
+---
+
+### Flow Builder, Operator, Collector
+
+The Flow API is built around three main components that represent the lifecycle of a data stream:
+
+*   **Flow Builder**: This is how you create a `Flow`. Builders produce values that are emitted into the stream. The most common builder is `flow { ... }`.
+    ```kotlin
+    val myFlow = flow {
+        // Emit values into the stream
+        for (i in 1..3) {
+            emit(i)
+            delay(100) // Simulate a non-blocking delay
+        }
+    }
+    ```
+*   **Operators**: These are functions that transform or modify the data emitted by a `Flow`. They operate on the upstream `Flow` and return a new `Flow`. Operators are a key part of the declarative nature of the Flow API.
+    ```kotlin
+    myFlow.map { it * 2 } // Transforms each emitted value
+          .filter { it > 2 } // Filters values based on a condition
+    ```
+*   **Collector**: This is the final step in the stream. A collector consumes the values emitted by the `Flow`. The most common collector is `collect()`, which is a terminal operator.
+    ```kotlin
+    coroutineScope.launch {
+        myFlow.collect { value ->
+            println("Received: $value")
+        }
+    }
+    ```
+
+---
+
+### `flowOn`, Dispatchers
+
+The **`flowOn`** operator is used to change the `Dispatcher` (the thread or thread pool) that the upstream `Flow` runs on. This is crucial for separating I/O-bound work (like network calls or database operations) from CPU-intensive or UI work.
+
+*   The upstream `Flow` (the part before `flowOn`) will run on the specified dispatcher.
+*   The downstream `Flow` (the part after `flowOn`) will continue to run on its original context.
+
+```kotlin
+fun getItems(): Flow<Item> = flow {
+    // This part runs on Dispatchers.IO
+    // Good for database or network calls
+    emit(api.fetchItems())
+}.flowOn(Dispatchers.IO)
+ // The collector will run on the original context (e.g., Dispatchers.Main)
+ .onEach { // This operator runs on the new context
+     // ...
+ }
+```
+
+`flowOn` is an essential tool for making sure your `Flow`s are non-blocking and efficient.
+
+---
+
+### Operators
+
+| Operator              | Description                                                                                             | Example                                         |
+| :-------------------- | :------------------------------------------------------------------------------------------------------ | :---------------------------------------------- |
+| **`filter`**          | Excludes items from the stream that don't satisfy a predicate.                                          | `flowOf(1, 2, 3).filter { it % 2 == 0 }` (emits 2) |
+| **`map`**             | Transforms each value in the stream into another value.                                                 | `flowOf(1, 2).map { it * 10 }` (emits 10, 20)     |
+| **`zip`**             | Combines the values of two `Flow`s into a single stream. It waits for a new value from both `Flow`s before emitting a combined value. Useful for parallel network calls. | `flow1.zip(flow2) { a, b -> a + b }`            |
+| **`flatMapConcat`**   | Processes items sequentially. It concatenates the streams created from each upstream item. A new inner stream will not start until the previous one completes. | `flowOf(1, 2).flatMapConcat { requestData(it) }` |
+| **`retry`**           | Retries the `Flow` when an exception occurs, up to a specified number of times.                         | `myFlow.retry(3)`                               |
+| **`debounce`**        | Suppresses values that are emitted too quickly. It emits a value only after a specified time has passed without a new emission. Great for instant search. | `events.debounce(300)`                          |
+| **`distinctUntilChanged`** | Filters out consecutive identical values.                                                               | `flowOf("A", "A", "B", "A").distinctUntilChanged()` (emits "A", "B", "A") |
+| **`flatMapLatest`**   | Processes items concurrently. When a new value arrives, it cancels the previous inner stream and starts a new one. | `flowOf(1, 2).flatMapLatest { requestData(it) }` |
+
+---
+
+### Terminal Operators
+
+A **terminal operator** is a function that starts the collection of a `Flow`. When a terminal operator is called, the `Flow` is activated, and the builder and operators begin emitting and processing values. A `Flow` is **cold** and does nothing until a terminal operator is called.
+
+Common terminal operators include:
+
+*   **`collect()`**: Collects all values from the `Flow`.
+*   **`first()`**: Returns the first value from the `Flow`.
+*   **`toList()`**: Converts all values to a list.
+*   **`single()`**: Collects and returns the single value from the `Flow` (throws an exception if there are zero or multiple values).
+*   **`launchIn()`**: A non-suspending way to launch a collection in a given `CoroutineScope`.
+
+---
+
+### Cold Flow vs. Hot Flow
+
+| Feature   | Cold Flow                                                                 | Hot Flow                      |
+| :-------- | :------------------------------------------------------------------------ | :---------------------------- |
+| **Start** | Starts emitting values only when a collector starts collecting.            | Starts emitting values immediately, regardless of collectors. |
+| **State** | Each collector gets a new, independent stream of data from the beginning. | All collectors share the same stream of data. |
+| **Example** | `flow { emit(...) }`                                                      | **`StateFlow`**, **`SharedFlow`** |
+
+A **cold `Flow`** is like a blueprint for a water faucet—it doesn't start producing water until you turn it on. A **hot `Flow`** is like a running water hose—it's always producing water, and new collectors can tap into the stream at any point.
+
+---
+
+### StateFlow, SharedFlow, callbackFlow, channelFlow
+
+*   **`StateFlow`**: A hot `Flow` that represents a state. It always holds and emits a single, latest value. It's a great replacement for `LiveData` in many scenarios, as it's lifecycle-aware and can be easily used with coroutines. It's primarily used to represent UI state.
+*   **`SharedFlow`**: A highly configurable hot `Flow` that can broadcast values to multiple collectors. It's useful for event streams where multiple parts of your app need to react to the same event. You can configure its replay cache and buffer size to control how it behaves.
+*   **`callbackFlow`**: A builder used to convert a callback-based API into a `Flow`. It provides a `ProducerScope` that allows you to emit values from a callback and then close the `Flow` when the callback stream is finished. This is crucial for interoperability with older APIs.
+*   **`channelFlow`**: A more powerful version of `callbackFlow`. It allows for more complex emission patterns, including sending values to the underlying channel from multiple coroutines.
+
+---
+
+### Exception Handling in Flow
+
+Exceptions in a `Flow` are handled with a **`catch`** operator. The `catch` operator intercepts an exception from the upstream `Flow` and can handle it, log it, or emit a new value.
+
+```kotlin
+myFlow
+    .onEach { throw IOException("Network error") } // This will throw an exception
+    .catch { e ->
+        // This operator catches the exception
+        println("Caught exception: ${e.message}")
+        // You can also emit a new value to recover
+        emit("Fallback value")
+    }
+    .collect()
+```
+
+The `catch` operator is **upstream-only**; it cannot catch exceptions from downstream operators.
+
+---
+
+### Unit Testing with Flow
+
+Testing a `ViewModel` that uses `Flow` and `StateFlow` is straightforward with the `kotlinx-coroutines-test` library.
+
+1.  Use `TestCoroutineDispatcher` to control the coroutine execution.
+2.  Use `runBlockingTest` or `runTest` to execute the coroutine scope.
+3.  Use the `collect` terminal operator on your `StateFlow` to check its emitted values.
+
+```kotlin
+class MyViewModelTest {
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule() // For LiveData
+
+    @get:Rule
+    val mainCoroutineRule = MainCoroutineRule() // Custom rule for TestCoroutineDispatcher
+
+    @Test
+    fun `test fetch data and state updates`() = mainCoroutineRule.runBlockingTest {
+        // Given
+        val viewModel = MyViewModel(mockRepository)
+        // A list to collect the state changes
+        val states = mutableListOf<MyState>()
+        val job = launch { viewModel.myState.toList(states) }
+        
+        // When
+        viewModel.fetchData()
+        
+        // Then
+        // Check initial state, loading state, and success state
+        Truth.assertThat(states).containsExactly(MyState.Loading, MyState.Success("Data"))
+        job.cancel()
+    }
+}
+```
+
