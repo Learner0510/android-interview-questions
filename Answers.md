@@ -2,67 +2,111 @@ Here's your README.md with a clickable table of contents at the top:
 
 # 📚 Table of Contents
 
-## Kotlin Flow API
-- [Kotlin Flow API](#kotlin-flow-api)
+### 🎯 Kotlin Language Fundamentals
+- [val vs var](#val-vs-var)
+- [const keyword](#advantage-of-using-const)
+- [String vs StringBuffer vs StringBuilder](#string-vs-stringbuffer-vs-stringbuilder)
+- [== vs === (Equality Operators)](#-vs--equality-operators)
+- [Elvis Operator (?:)](#elvis-operator-)
+- [Labels](#labels)
+- [Visibility Modifiers](#visibility-modifiers)
+- [open keyword](#open-keyword)
+- [internal visibility modifier](#internal-visibility-modifier)
+- [open vs public](#open-vs-public)
+
+### 🔧 Kotlin Advanced Features
+- [inline function](#inline-function)
+- [noinline keyword](#noinline-keyword)
+- [crossinline keyword](#crossinline-keyword)
+- [reified keyword](#reified-keyword)
+- [lateinit vs lazy](#lateinit-vs-lazy)
+- [Checking lateinit Initialization](#checking-lateinit-initialization)
+- [Lazy Initialization](#lazy-initialization)
+- [init block](#init-block)
+- [Higher-Order Functions](#higher-order-functions)
+- [Function That Returns a Function](#function-that-returns-a-function)
+- [Lambdas](#lambdas)
+- [Infix Notation](#infix-notation)
+- [Delegates](#delegates)
+
+### 🏗️ Kotlin Classes & Objects
+- [Data Classes](#data-classes)
+- [Sealed Classes](#sealed-classes)
+- [Sealed Classes in Android](#sealed-classes-in-android)
+- [Inline Classes](#inline-classes)
+- [Companion Objects](#companion-objects)
+- [Singleton Class](#singleton-class)
+- [Extension Functions](#extension-functions)
+- [Scope Functions (let, run, with, also, apply)](#scope-functions-let-run-with-also-apply)
+- [apply Scope Function](#apply-scope-function)
+- [let Scope Function](#let-scope-function)
+- [apply vs with](#apply-vs-with)
+
+### 📦 Collections & Data Operations
+- [Collections](#collections)
+- [List vs Array](#list-vs-array)
+- [Removing Duplicates from an Array](#removing-duplicates-from-an-array)
+- [associateBy](#associateby)
+- [partition Filtering Function](#partition-filtering-function)
+
+### ☕ Java Interoperability
+- [@JvmStatic Annotation](#jvmstatic-annotation)
+- [@JvmField Annotation](#jvmfield-annotation)
+- [@JvmOverloads Annotation](#jvmoverloads-annotation)
+- [Java Static Methods Equivalent](#java-static-methods-equivalent)
+
+### 🌊 Kotlin Coroutines
+- [What are Coroutines?](#coroutines)
+- [Suspending vs Blocking](#suspending-vs-blocking)
+- [launch vs async](#launch-vs-async)
+- [Dispatchers](#dispatchers-in-kotlin-coroutines)
+- [coroutineScope vs supervisorScope](#coroutinescope-vs-supervisorscope)
+- [Coroutine Scope](#coroutine-scope)
+- [Coroutine Context](#coroutine-context)
+- [Coroutine Scopes in Android](#coroutine-scopes-in-android)
+- [runBlocking](#runblocking-in-coroutines)
+- [Structured Concurrency](#structured-concurrency)
+- [withContext](#withcontext)
+- [Thread.sleep() vs delay()](#threadsleep-vs-delay)
+- [Coroutine Timeouts](#coroutine-timeouts)
+- [Combining Coroutine Results](#combining-coroutine-results)
+- [Job in Coroutines](#job-in-coroutines)
+- [job.cancel() vs scope.cancel()](#jobcancel-vs-scopecancel)
+- [Exception Handling in Coroutines](#exception-handling-in-coroutines)
+- [Exception in Unawaited async](#exception-in-unawaited-async)
+- [Debounce with Coroutines](#debounce-with-coroutines)
+- [Coroutines in Series and Parallel](#coroutines-in-series-and-parallel)
+- [yield in Coroutines](#yield-in-coroutines)
+- [Callback to Coroutines](#callback-to-coroutines-in-kotlin)
+- [Retrofit with Kotlin Coroutines](#retrofit-with-kotlin-coroutines)
+- [Room Database with Kotlin Coroutines](#room-database-with-kotlin-coroutines)
+- [Unit Testing with Coroutines](#unit-testing-viewmodel-with-kotlin-coroutines-and-livedata)
+
+### 🌊 Kotlin Flow API
 - [Flow Builder, Operator, Collector](#flow-builder-operator-collector)
 - [flowOn, Dispatchers](#flowon-dispatchers)
-- [Operators](#operators)
+- [Flow Operators](#operators)
 - [Terminal Operators](#terminal-operators)
-- [Cold Flow vs. Hot Flow](#cold-flow-vs-hot-flow)
-- [StateFlow, SharedFlow, callbackFlow, channelFlow](#stateflow-sharedflow-callbackflow-channelflow)
+- [Cold Flow vs Hot Flow](#cold-flow-vs-hot-flow)
+- [StateFlow and SharedFlow](#stateflow-sharedflow-callbackflow-channelflow)
+- [stateIn vs shareIn](#statein-vs-sharein-in-flow)
+- [flatMapConcat, flatMapMerge, flatMapLatest](#flatmapconcat-flatmapmerge-and-flatmaplatest)
+- [collect vs collectLatest](#collect-vs-collectlatest)
 - [Exception Handling in Flow](#exception-handling-in-flow)
 - [Unit Testing with Flow](#unit-testing-with-flow)
 
-## Android & Kotlin Fundamentals
-- [Android Push Notification Flow using FCM](#android-push-notification-flow-using-fcm)
-- [What is an inline function in Kotlin?](#what-is-an-inline-function-in-kotlin)
-- [What is the advantage of using const in Kotlin?](#what-is-the-advantage-of-using-const-in-kotlin)
-- [What is a reified keyword in Kotlin?](#what-is-a-reified-keyword-in-kotlin)
-- [internal visibility modifier in Kotlin](#internal-visibility-modifier-in-kotlin)
-- [open keyword in Kotlin](#open-keyword-in-kotlin)
-- [lateinit vs lazy in Kotlin](#lateinit-vs-lazy-in-kotlin)
-- [What is Multidex in Android?](#what-is-multidex-in-android)
-- [How does the Android Push Notification system work?](#how-does-the-android-push-notification-system-work)
-- [How does the Kotlin Multiplatform work?](#how-does-the-kotlin-multiplatform-work)
-- [What is a ViewModel and how is it useful?](#what-is-a-viewmodel-and-how-is-it-useful)
-- [Is it possible to force Garbage Collection in Android?](#is-it-possible-to-force-garbage-collection-in-android)
-- [What is a JvmStatic Annotation in Kotlin?](#what-is-a-jvmstatic-annotation-in-kotlin)
-- [init block in Kotlin](#init-block-in-kotlin)
-- [JvmField Annotation in Kotlin](#jvmfield-annotation-in-kotlin)
-- [singleTask launchMode in Android](#singletask-launchmode-in-android)
-- [Difference between == and === in Kotlin](#difference-between--and--in-kotlin)
-- [JvmOverloads Annotation in Kotlin](#jvmoverloads-annotation-in-kotlin)
-- [Why is it recommended to use only the default constructor to create a Fragment?](#why-is-it-recommended-to-use-only-the-default-constructor-to-create-a-fragment)
-- [Why do we need to call setContentView() in onCreate() of Activity class?](#why-do-we-need-to-call-setcontentview-in-oncreate-of-activity-class)
-- [When only onDestroy is called for an activity without onPause() and onStop()?](#when-only-ondestroy-is-called-for-an-activity-without-onpause-and-onstop)
+### 📱 Android Development
+- [Android Push Notification Flow (FCM)](#android-push-notification-flow-using-fcm)
+- [ViewModel](#what-is-a-viewmodel-and-how-is-it-useful)
+- [Fragment Default Constructor](#why-is-it-recommended-to-use-only-the-default-constructor-to-create-a-fragment)
+- [setContentView() in onCreate()](#why-do-we-need-to-call-setcontentview-in-oncreate-of-activity-class)
+- [Activity Lifecycle - onDestroy without onPause/onStop](#when-only-ondestroy-is-called-for-an-activity-without-onpause-and-onstop)
+- [singleTask launchMode](#singletask-launchmode-in-android)
+- [Multidex in Android](#what-is-multidex-in-android)
+- [Force Garbage Collection](#is-it-possible-to-force-garbage-collection-in-android)
 
-## Kotlin Coroutines
-- [Master Kotlin Coroutines](#master-kotlin-coroutines)
-  - [Suspending vs. Blocking in Kotlin Coroutines](#suspending-vs-blocking-in-kotlin-coroutines)
-  - [Launch vs. Async in Kotlin Coroutines](#launch-vs-async-in-kotlin-coroutines)
-  - [Dispatchers in Kotlin Coroutines](#dispatchers-in-kotlin-coroutines)
-  - [coroutineScope vs. supervisorScope](#coroutinescope-vs-supervisorscope)
-  - [Suspend Function in Kotlin Coroutines](#suspend-function-in-kotlin-coroutines)
-  - [Kotlin withContext vs. async-await](#kotlin-withcontext-vs-async-await)
-  - [CoroutineContext in Kotlin](#coroutinecontext-in-kotlin)
-  - [Callback to Coroutines in Kotlin](#callback-to-coroutines-in-kotlin)
-  - [Retrofit with Kotlin Coroutines](#retrofit-with-kotlin-coroutines)
-  - [Parallel Multiple Network Calls Using Kotlin Coroutines](#parallel-multiple-network-calls-using-kotlin-coroutines)
-  - [Room Database with Kotlin Coroutines](#room-database-with-kotlin-coroutines)
-  - [Unit Testing ViewModel with Kotlin Coroutines and LiveData](#unit-testing-viewmodel-with-kotlin-coroutines-and-livedata)
-- [What is Coroutines?](#what-is-coroutines)
-  - [Key Concepts](#key-concepts)
-  - [Coroutines vs. Threads](#coroutines-vs-threads)
-- [withContext](#withcontext)
-  - [How It Works](#how-it-works)
-  - [Example](#example)
-  - [withContext vs. async](#withcontext-vs-async)
-- [Exception Handling in Coroutines](#exception-handling-in-coroutines)
-  - [Exception Propagation](#exception-propagation)
-  - [Handling Exceptions with try-catch](#handling-exceptions-with-try-catch)
-  - [The CoroutineExceptionHandler](#the-coroutineexceptionhandler)
-  - [Special Cases](#special-cases)
-  - [Practical Comparison: supervisorScope vs coroutineScope](#practical-comparison-supervisorscope-vs-coroutinescope)
+### 🌍 Cross-Platform
+- [Kotlin Multiplatform](#kotlin-multiplatform)
 
 ---
 
@@ -1119,4 +1163,1294 @@ launch {
 - A failure in one child coroutine (e.g., `usersDeferred`) cancels all siblings and the parent scope.  
 - Even with `try-catch`, canceled coroutines (e.g., `moreUsersDeferred`) will throw `CancellationException`.  
 ✅ **Use Case**: Best for interdependent operations (e.g., fetching primary data and metadata) where failure invalidates others.
-````
+
+
+## 🎯 Kotlin Language Fundamentals
+
+### val vs var
+
+The difference between `val` and `var` in Kotlin is about mutability.
+
+- **`val` (from "value"):** Used to declare an **immutable** variable, meaning its value can be assigned only once. It's similar to `final` in Java. You should prefer `val` whenever possible, as it leads to safer and more predictable code.
+- **`var` (from "variable"):** Used to declare a **mutable** variable, meaning its value can be reassigned multiple times.
+
+**Example:**
+
+```kotlin
+val name = "Alice" // Cannot be reassigned
+// name = "Bob" // This would be a compilation error
+
+var age = 30 // Can be reassigned
+age = 31 // This is fine
+```
+
+---
+
+### Advantage of Using const
+
+The **`const`** keyword in Kotlin is used to declare a compile-time constant. It has two main advantages:
+
+1. **Compile-time optimization:** The value of a `const` property is inlined directly at the call site during compilation. This means there's no runtime overhead to access the value, as it's hardcoded into the bytecode.
+2. **Java Interoperability:** A `const` property is compiled as a `public static final` field in Java, making it easily accessible from Java code.
+
+**Example:**
+
+```kotlin
+const val API_KEY = "my_secret_key"
+
+fun connectToApi() {
+    // The value "my_secret_key" is inlined here at compile time
+    println("Connecting with key: $API_KEY") 
+}
+```
+
+A `const` property can only be a `String` or a primitive type and must be declared at the top level or within a `companion object`.
+
+---
+
+### String vs StringBuffer vs StringBuilder
+
+| Feature          | **String** | **StringBuffer** | **StringBuilder** |
+|------------------|----------------------------------------------|----------------------------------------------|--------------------------------------------|
+| **Mutability** | **Immutable**. Once created, it cannot be changed. | **Mutable**. Can be changed in place. | **Mutable**. Can be changed in place. |
+| **Thread-Safety**| N/A (immutable).                            | **Thread-safe**. Methods are synchronized.  | **Not thread-safe**. |
+| **Performance** | Slower for many modifications due to new object creation. | Slower than `StringBuilder` due to synchronization overhead. | Fastest option for mutable strings in single-threaded environment. |
+| **Use Case** | Default choice for static text or infrequent modifications. | Multi-threaded environments.                | Single-threaded environments where you need to build a string dynamically. |
+
+**Example:**
+
+```kotlin
+val sentence = StringBuilder()
+sentence.append("Hello")
+sentence.append(" ")
+sentence.append("World")
+println(sentence.toString()) // Prints: Hello World
+```
+
+---
+
+### == vs === (Equality Operators)
+
+The `==` and `===` operators in Kotlin are used for comparison, but they check for different things:
+
+- **`==` (Structural Equality):** Checks if two objects have the same content or value. For objects, it calls the `equals()` method.
+- **`===` (Referential Equality):** Checks if two objects are the exact same instance in memory.
+
+**Example:**
+
+```kotlin
+val a = "Hello"
+val b = "Hello"
+val c = String("Hello".toCharArray())
+
+println(a == b)  // true (same value)
+println(a == c)  // true (same value)
+println(a === b) // true (JVM optimization)
+println(a === c) // false (c is a new instance)
+```
+
+---
+
+### Elvis Operator (?:)
+
+The **Elvis operator (`?:`)** provides a concise way to return a default value when an expression on its left-hand side is `null`.
+
+**Example:**
+
+```kotlin
+val name: String? = null
+val displayName = name ?: "Guest" // displayName is "Guest"
+
+val nonNullName: String? = "John"
+val anotherName = nonNullName ?: "Guest" // anotherName is "John"
+```
+
+---
+
+### Labels
+
+**Labels** are a way to name a loop or a lambda block in Kotlin. They are used to specify which scope a non-local `return` or `break` should apply to.
+
+**Example:**
+
+```kotlin
+fun findNumber() {
+    val numbers = listOf(1, 2, 3, 4, 5)
+    numbers.forEach loop@{
+        if (it == 3) {
+            return@loop // Returns from the lambda, not the function
+        }
+        println(it)
+    }
+    println("This line is printed.")
+}
+```
+
+---
+
+### Visibility Modifiers
+
+Visibility modifiers control the accessibility of declarations in Kotlin:
+
+1. **`public` (default):** Visible everywhere.
+2. **`private`:** Visible only within the file, class, or object where it's declared.
+3. **`protected`:** Visible within the class and its subclasses.
+4. **`internal`:** Visible within the same module.
+
+**Example:**
+
+```kotlin
+private class MySecretClass
+internal fun doSomethingInternal() {}
+open class Base {
+    protected fun protectedMethod() {}
+}
+```
+
+---
+
+### open keyword
+
+In Kotlin, all classes and functions are **final** by default. The `open` keyword allows a class to be subclassed or a function to be overridden.
+
+**Example:**
+
+```kotlin
+open class Vehicle {
+    open fun drive() {
+        println("Driving a vehicle.")
+    }
+}
+
+class Car : Vehicle() {
+    override fun drive() {
+        println("Driving a car.")
+    }
+}
+```
+
+---
+
+### internal visibility modifier
+
+The **`internal`** visibility modifier means that the declared member is visible **within the same module**.
+
+**Example:**
+
+```kotlin
+// In module 'app'
+internal class Logger {
+    fun log(message: String) {
+        println(message)
+    }
+}
+```
+
+---
+
+### open vs public
+
+| Feature       | `open`                                        | `public`                                     |
+|---------------|-----------------------------------------------|----------------------------------------------|
+| **Category** | Inheritance modifier.                         | Visibility modifier.                         |
+| **Purpose** | Allows a class to be subclassed or a function to be overridden. | Controls the accessibility of a declaration. |
+| **Default** | **No.** Classes and functions are `final` by default. | **Yes.** All declarations are `public` by default. |
+
+---
+
+## 🔧 Kotlin Advanced Features
+
+### inline function
+
+An inline function in Kotlin is a function that the compiler replaces with the actual function body at the call site. This reduces the overhead of lambda expressions.
+
+**Example:**
+
+```kotlin
+inline fun calculateInline(a: Int, b: Int, operation: (Int, Int) -> Int): Int {
+    return operation(a, b)
+}
+```
+
+---
+
+### noinline keyword
+
+The `noinline` keyword prevents the compiler from inlining a specific lambda parameter of an inline function.
+
+**Example:**
+
+```kotlin
+inline fun doSomething(
+    inlineAction: () -> Unit,
+    noinline noInlineAction: () -> Unit
+) {
+    inlineAction() // This lambda is inlined
+    // noInlineAction can be passed to other functions
+}
+```
+
+---
+
+### crossinline keyword
+
+The `crossinline` keyword prevents non-local returns from inside a lambda parameter.
+
+**Example:**
+
+```kotlin
+inline fun myInlineFunction(crossinline action: () -> Unit) {
+    println("Before action")
+    action()
+    println("After action")
+}
+```
+
+---
+
+### reified keyword
+
+The `reified` keyword is used with inline functions to access type information at runtime for a generic type parameter.
+
+**Example:**
+
+```kotlin
+inline fun <reified T> getClassName(value: T) {
+    println("The class name is ${T::class.simpleName}")
+}
+
+getClassName("Hello") // Prints: The class name is String
+```
+
+---
+
+### lateinit vs lazy
+
+| Feature        | `lateinit`                                     | `lazy`                                                                 |
+|----------------|------------------------------------------------|------------------------------------------------------------------------|
+| **Usage** | Used with mutable (`var`) properties.          | Used with immutable (`val`) properties.                                |
+| **When to use**| When the property will be initialized later | When the property's initialization is expensive and should only happen on first access |
+| **Thread-Safety**| Not thread-safe by default | Thread-safe by default |
+| **Null safety**| Must check for initialization before access | Guaranteed to be non-null after first access |
+
+**Example:**
+
+```kotlin
+// lateinit:
+lateinit var myString: String
+
+// lazy:
+val myLazyString: String by lazy {
+    println("Initializing...")
+    "This is lazy!"
+}
+```
+
+---
+
+### Checking lateinit Initialization
+
+You can check if a `lateinit` variable has been initialized using its `isInitialized` property.
+
+**Example:**
+
+```kotlin
+lateinit var name: String
+
+if (::name.isInitialized) {
+    println("Name is initialized.")
+}
+```
+
+---
+
+### Lazy Initialization
+
+**Lazy initialization** delays the initialization of a property until its first access.
+
+**Example:**
+
+```kotlin
+val expensiveComputation by lazy {
+    println("Computing...")
+    "Result"
+}
+```
+
+---
+
+### init block
+
+An `init` block is executed as part of a class's primary constructor.
+
+**Example:**
+
+```kotlin
+class Person(val name: String) {
+    init {
+        println("Person $name created")
+    }
+}
+```
+
+---
+
+### Higher-Order Functions
+
+A **higher-order function** is a function that either accepts another function as a parameter or returns a function.
+
+**Example:**
+
+```kotlin
+fun calculate(a: Int, b: Int, operation: (Int, Int) -> Int): Int {
+    return operation(a, b)
+}
+
+val sum = calculate(5, 3) { x, y -> x + y }
+```
+
+---
+
+### Function That Returns a Function
+
+**Example:**
+
+```kotlin
+fun createGreeter(greeting: String): (String) -> Unit {
+    return { name: String ->
+        println("$greeting, $name!")
+    }
+}
+
+val helloGreeter = createGreeter("Hello")
+helloGreeter("Alice") // Prints: Hello, Alice!
+```
+
+---
+
+### Lambdas
+
+A **lambda expression** is a concise way to define an anonymous function.
+
+**Example:**
+
+```kotlin
+val sum = { a: Int, b: Int -> a + b }
+val result = sum(10, 5) // result is 15
+```
+
+---
+
+### Infix Notation
+
+**Infix notation** is a more readable way to call a function with a single parameter.
+
+**Example:**
+
+```kotlin
+infix fun Int.isDivisibleBy(divisor: Int): Boolean {
+    return this % divisor == 0
+}
+
+println(10 isDivisibleBy 2) // true
+```
+
+---
+
+### Delegates
+
+**Delegates** allow one object to delegate some of its functionality to another object.
+
+**Example:**
+
+```kotlin
+val myLazyValue: String by lazy {
+    "This is computed once."
+}
+
+class Manager(private val worker: Worker) : Runnable by worker
+```
+
+---
+
+## 🏗️ Kotlin Classes & Objects
+
+### Data Classes
+
+A **data class** automatically generates useful methods like `equals()`, `hashCode()`, `toString()`, and `copy()`.
+
+**Example:**
+
+```kotlin
+data class User(val name: String, val age: Int)
+
+val user1 = User("Alice", 30)
+val user2 = user1.copy(age = 31)
+```
+
+---
+
+### Sealed Classes
+
+A **sealed class** represents a restricted class hierarchy. All subclasses must be defined in the same file.
+
+**Example:**
+
+```kotlin
+sealed class Result {
+    data class Success(val data: String) : Result()
+    data class Error(val message: String) : Result()
+    object Loading : Result()
+}
+
+fun handleResult(result: Result) {
+    when (result) {
+        is Result.Success -> println("Success: ${result.data}")
+        is Result.Error -> println("Error: ${result.message}")
+        Result.Loading -> println("Loading...")
+    }
+}
+```
+
+---
+
+### Sealed Classes in Android
+
+Sealed classes are perfect for modeling **UI state** in Android:
+
+**Example:**
+
+```kotlin
+sealed class UiState {
+    object Loading : UiState()
+    data class Success(val data: List<String>) : UiState()
+    data class Error(val message: String) : UiState()
+}
+```
+
+---
+
+### Inline Classes
+
+An **inline class** is a wrapper around a single value with no runtime overhead.
+
+**Example:**
+
+```kotlin
+@JvmInline
+value class Password(private val s: String)
+```
+
+---
+
+### Companion Objects
+
+A **companion object** is a special object declared inside a class, similar to static members in Java.
+
+**Example:**
+
+```kotlin
+class MyClass {
+    companion object {
+        const val MY_CONSTANT = "Hello"
+        fun create(): MyClass = MyClass()
+    }
+}
+```
+
+---
+
+### Singleton Class
+
+A **Singleton** in Kotlin is created using the `object` keyword.
+
+**Example:**
+
+```kotlin
+object MySingleton {
+    fun doSomething() {
+        println("Singleton method called.")
+    }
+}
+
+MySingleton.doSomething()
+```
+
+---
+
+### Extension Functions
+
+**Extension functions** add new functionality to existing classes without inheritance.
+
+**Example:**
+
+```kotlin
+fun String.addExclamation(): String {
+    return this + "!"
+}
+
+val result = "hello".addExclamation() // "hello!"
+```
+
+---
+
+### Scope Functions (let, run, with, also, apply)
+
+| Function | Context Object | Return Value | Common Use Cases |
+|----------|---------------|--------------|------------------|
+| `let`    | `it`          | Lambda result | Null safety, local scope |
+| `run`    | `this`        | Lambda result | Object initialization with computation |
+| `with`   | `this`        | Lambda result | Multiple calls on an object |
+| `also`   | `it`          | Context object | Side effects |
+| `apply`  | `this`        | Context object | Object configuration |
+
+---
+
+### apply Scope Function
+
+The `apply` function configures an object and returns the object itself.
+
+**Example:**
+
+```kotlin
+val person = Person().apply {
+    name = "Alice"
+    age = 30
+}
+```
+
+---
+
+### let Scope Function
+
+The `let` function performs actions on a non-null object and returns the lambda result.
+
+**Example:**
+
+```kotlin
+val result = name?.let {
+    println("The name is $it")
+    it.length
+}
+```
+
+---
+
+### apply vs with
+
+- `apply` is an extension function that returns the object itself
+- `with` is a non-extension function that returns the lambda result
+
+---
+
+## 📦 Collections & Data Operations
+
+### Collections
+
+Kotlin separates **mutable** and **immutable** collections:
+
+- **`List`:** Ordered collection with duplicates allowed
+- **`Set`:** Unique elements with no defined order
+- **`Map`:** Key-value pairs
+
+**Example:**
+
+```kotlin
+val numbers = listOf(1, 2, 3)
+val uniqueNumbers = setOf(1, 2, 2) // [1, 2]
+val nameMap = mapOf("Alice" to 30)
+```
+
+---
+
+### List vs Array
+
+| Feature | **List** | **Array** |
+|---------|----------|-----------|
+| **Mutability** | Immutable (`List`) or mutable (`MutableList`) | Mutable with fixed size |
+| **Size** | Dynamic | Fixed |
+| **Performance** | Slower due to overhead | Faster for primitives |
+| **Use Case** | General-purpose collections | Performance-critical scenarios |
+
+---
+
+### Removing Duplicates from an Array
+
+**Example:**
+
+```kotlin
+val numbers = arrayOf(1, 2, 3, 2, 1)
+val unique = numbers.distinct().toTypedArray()
+// or
+val uniqueSet = numbers.toSet().toTypedArray()
+```
+
+---
+
+### associateBy
+
+Transforms a collection into a Map using a key selector.
+
+**Example:**
+
+```kotlin
+data class Person(val id: Int, val name: String)
+val people = listOf(Person(1, "Alice"), Person(2, "Bob"))
+val peopleByName = people.associateBy { it.name }
+```
+
+---
+
+### partition Filtering Function
+
+Splits a collection into two lists based on a predicate.
+
+**Example:**
+
+```kotlin
+val numbers = listOf(1, 2, 3, 4, 5, 6)
+val (even, odd) = numbers.partition { it % 2 == 0 }
+```
+
+---
+
+## ☕ Java Interoperability
+
+### @JvmStatic Annotation
+
+Exposes a companion object function as a true static method in Java.
+
+**Example:**
+
+```kotlin
+class MyClass {
+    companion object {
+        @JvmStatic
+        fun myStaticMethod() {
+            println("Static method")
+        }
+    }
+}
+```
+
+---
+
+### @JvmField Annotation
+
+Exposes a Kotlin property as a public field in Java.
+
+**Example:**
+
+```kotlin
+class MyClass {
+    @JvmField
+    val myField = "Value"
+}
+```
+
+---
+
+### @JvmOverloads Annotation
+
+Generates overloaded methods for functions with default parameters.
+
+**Example:**
+
+```kotlin
+@JvmOverloads
+fun greet(name: String = "World", greeting: String = "Hello") {
+    println("$greeting, $name!")
+}
+```
+
+---
+
+### Java Static Methods Equivalent
+
+In Kotlin, use **companion objects** or **top-level functions**:
+
+```kotlin
+// Top-level function
+fun isEven(n: Int) = n % 2 == 0
+
+// Companion object
+class Utils {
+    companion object {
+        fun helper() { }
+    }
+}
+```
+
+---
+
+## 🌊 Kotlin Coroutines
+
+### Coroutines
+
+**Coroutines** are lightweight threads for asynchronous programming. They can suspend execution without blocking threads.
+
+**Example:**
+
+```kotlin
+fun main() = runBlocking {
+    launch {
+        delay(1000L)
+        println("World!")
+    }
+    println("Hello,")
+}
+```
+
+---
+
+### Suspending vs Blocking
+
+- **Suspending:** Pauses execution without blocking the thread
+- **Blocking:** Holds the thread until completion
+
+**Example:**
+
+```kotlin
+// Suspending - doesn't block thread
+suspend fun fetchData() {
+    delay(1000)
+}
+
+// Blocking - blocks thread
+fun blockingFunction() {
+    Thread.sleep(1000)
+}
+```
+
+---
+
+### launch vs async
+
+| Feature | `launch` | `async` |
+|---------|----------|---------|
+| **Returns** | `Job` | `Deferred<T>` |
+| **Purpose** | Fire-and-forget | Return a result |
+| **Usage** | Side effects | Parallel computation |
+
+**Example:**
+
+```kotlin
+val job = launch { /* do work */ }
+val deferred = async { /* return value */ }
+val result = deferred.await()
+```
+
+---
+
+### Dispatchers in Kotlin Coroutines
+
+- **`Dispatchers.Main`:** UI thread
+- **`Dispatchers.IO`:** I/O operations
+- **`Dispatchers.Default`:** CPU-intensive work
+- **`Dispatchers.Unconfined`:** No specific thread
+
+---
+
+### coroutineScope vs supervisorScope
+
+- **`coroutineScope`:** Fails all children if one fails
+- **`supervisorScope`:** Isolates failures to individual children
+
+---
+
+### Coroutine Scope
+
+Defines the lifecycle of coroutines:
+
+```kotlin
+val scope = CoroutineScope(Dispatchers.Default)
+scope.launch { /* coroutine */ }
+```
+
+---
+
+### Coroutine Context
+
+Collection of elements defining coroutine behavior:
+
+```kotlin
+val context = Job() + Dispatchers.IO + CoroutineName("MyTask")
+```
+
+---
+
+### Coroutine Scopes in Android
+
+- `viewModelScope`: Tied to ViewModel lifecycle
+- `lifecycleScope`: Tied to Activity/Fragment lifecycle
+
+---
+
+### runBlocking in Coroutines
+
+Blocks the current thread until coroutine completes:
+
+```kotlin
+fun main() = runBlocking {
+    delay(1000)
+    println("Done")
+}
+```
+
+---
+
+### Structured Concurrency
+
+Parent-child hierarchy ensuring proper lifecycle management:
+
+- Parent cancellation cancels all children
+- Parent waits for all children to complete
+
+---
+
+### withContext
+
+Changes coroutine context for a block of code:
+
+```kotlin
+suspend fun fetchData() {
+    val data = withContext(Dispatchers.IO) {
+        // IO operation
+        api.getData()
+    }
+    // Back to original context
+}
+```
+
+---
+
+### Thread.sleep() vs delay()
+
+- `Thread.sleep()`: Blocks thread
+- `delay()`: Suspends coroutine without blocking thread
+
+---
+
+### Coroutine Timeouts
+
+```kotlin
+val result = withTimeoutOrNull(1300L) {
+    // Operation that might timeout
+    "Success"
+} ?: "Timeout"
+```
+
+---
+
+### Combining Coroutine Results
+
+```kotlin
+coroutineScope {
+    val user = async { fetchUser() }
+    val posts = async { fetchPosts() }
+    
+    val userData = user.await()
+    val userPosts = posts.await()
+}
+```
+
+---
+
+### Job in Coroutines
+
+Represents coroutine lifecycle:
+
+```kotlin
+val job = launch { /* work */ }
+job.cancel() // Cancel the coroutine
+job.join()   // Wait for completion
+```
+
+---
+
+### job.cancel() vs scope.cancel()
+
+- `job.cancel()`: Cancels single coroutine
+- `scope.cancel()`: Cancels all coroutines in scope
+
+---
+
+### Exception Handling in Coroutines
+
+```kotlin
+val handler = CoroutineExceptionHandler { _, exception ->
+    println("Caught: ${exception.message}")
+}
+
+scope.launch(handler) {
+    throw Exception("Error")
+}
+```
+
+---
+
+### Exception in Unawaited async
+
+Exceptions in `async` are stored until `await()` is called:
+
+```kotlin
+val deferred = async { throw Exception() }
+// Exception thrown here:
+deferred.await()
+```
+
+---
+
+### Debounce with Coroutines
+
+```kotlin
+fun <T> debounce(
+    waitMs: Long = 300L,
+    scope: CoroutineScope,
+    action: suspend (T) -> Unit
+): (T) -> Unit {
+    var job: Job? = null
+    return { param: T ->
+        job?.cancel()
+        job = scope.launch {
+            delay(waitMs)
+            action(param)
+        }
+    }
+}
+```
+
+---
+
+### Coroutines in Series and Parallel
+
+**Series:**
+```kotlin
+val result1 = doFirst()
+val result2 = doSecond(result1)
+```
+
+**Parallel:**
+```kotlin
+coroutineScope {
+    val d1 = async { doFirst() }
+    val d2 = async { doSecond() }
+    val results = awaitAll(d1, d2)
+}
+```
+
+---
+
+### yield in Coroutines
+
+Yields execution to other coroutines:
+
+```kotlin
+launch {
+    repeat(3) {
+        println("Task $it")
+        yield() // Give other coroutines a chance
+    }
+}
+```
+
+---
+
+### Callback to Coroutines in Kotlin
+
+Convert callback-based APIs to suspend functions:
+
+```kotlin
+suspend fun fetchData(): Result = suspendCoroutine { continuation ->
+    api.fetchData { result ->
+        continuation.resume(result)
+    }
+}
+```
+
+---
+
+### Retrofit with Kotlin Coroutines
+
+```kotlin
+interface ApiService {
+    @GET("users/{id}")
+    suspend fun getUser(@Path("id") id: String): User
+}
+
+// Usage
+val user = apiService.getUser("123")
+```
+
+---
+
+### Room Database with Kotlin Coroutines
+
+```kotlin
+@Dao
+interface UserDao {
+    @Query("SELECT * FROM users")
+    suspend fun getAllUsers(): List<User>
+    
+    @Insert
+    suspend fun insertUser(user: User)
+}
+```
+
+---
+
+### Unit Testing ViewModel with Kotlin Coroutines and LiveData
+
+```kotlin
+@Test
+fun testViewModel() = runTest {
+    val viewModel = MyViewModel(mockRepository)
+    viewModel.loadData()
+    
+    assertEquals(expectedState, viewModel.state.value)
+}
+```
+
+---
+
+## 🌊 Kotlin Flow API
+
+### Flow Builder, Operator, Collector
+
+- **Builder:** Creates a Flow
+- **Operators:** Transform the Flow
+- **Collector:** Consumes the Flow
+
+```kotlin
+flow { emit(1) }        // Builder
+    .map { it * 2 }     // Operator
+    .collect { }        // Collector
+```
+
+---
+
+### flowOn, Dispatchers
+
+Changes the dispatcher for upstream operations:
+
+```kotlin
+flow { emit(fetchData()) }
+    .flowOn(Dispatchers.IO)
+    .collect { } // Runs on original context
+```
+
+---
+
+### Operators
+
+| Operator | Description |
+|----------|-------------|
+| `filter` | Filters values |
+| `map` | Transforms values |
+| `zip` | Combines two flows |
+| `flatMapConcat` | Sequential processing |
+| `flatMapLatest` | Cancels previous on new emission |
+| `debounce` | Delays emissions |
+| `distinctUntilChanged` | Filters consecutive duplicates |
+| `retry` | Retries on failure |
+
+---
+
+### Terminal Operators
+
+Start Flow collection:
+
+- `collect()`: Collects all values
+- `first()`: First value
+- `toList()`: Converts to list
+- `single()`: Single value
+- `launchIn()`: Non-suspending collection
+
+---
+
+### Cold Flow vs Hot Flow
+
+| Feature | Cold Flow | Hot Flow |
+|---------|-----------|----------|
+| **Start** | On collection | Immediately |
+| **State** | Independent streams | Shared stream |
+| **Example** | `flow { }` | `StateFlow`, `SharedFlow` |
+
+---
+
+### StateFlow, SharedFlow, callbackFlow, channelFlow
+
+- **`StateFlow`:** Hot flow with single latest value
+- **`SharedFlow`:** Configurable hot flow for events
+- **`callbackFlow`:** Convert callbacks to Flow
+- **`channelFlow`:** Complex emission patterns
+
+---
+
+### stateIn vs shareIn in Flow
+
+- **`stateIn`:** Creates StateFlow from cold flow
+- **`shareIn`:** Creates SharedFlow from cold flow
+
+```kotlin
+val stateFlow = flow.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.Lazily,
+    initialValue = default
+)
+```
+
+---
+
+### flatMapConcat, flatMapMerge, and flatMapLatest
+
+- **`flatMapConcat`:** Sequential processing
+- **`flatMapMerge`:** Concurrent processing
+- **`flatMapLatest`:** Cancels previous, processes latest
+
+---
+
+### collect vs collectLatest
+
+- **`collect`:** Processes each value sequentially
+- **`collectLatest`:** Cancels previous processing for new values
+
+---
+
+### Exception Handling in Flow
+
+```kotlin
+flow { emit(value) }
+    .catch { e ->
+        println("Error: ${e.message}")
+        emit(fallbackValue)
+    }
+    .collect()
+```
+
+---
+
+### Unit Testing with Flow
+
+```kotlin
+@Test
+fun testFlow() = runTest {
+    val flow = repository.dataFlow
+    val results = flow.take(3).toList()
+    assertEquals(expected, results)
+}
+```
+
+---
+
+## 📱 Android Development
+
+### Android Push Notification Flow using FCM
+
+1. **Registration:** App gets FCM token
+2. **Token Upload:** Send token to app server
+3. **Message Creation:** Server creates notification payload
+4. **Sending:** Server sends to FCM
+5. **Delivery:** FCM delivers to device
+6. **Reception:** App handles based on state (foreground/background)
+
+---
+
+### What is a ViewModel and how is it useful?
+
+`ViewModel` stores and manages UI-related data in a lifecycle-aware way:
+
+- Survives configuration changes
+- Separates UI logic from business logic
+- Prevents memory leaks
+
+```kotlin
+class MyViewModel : ViewModel() {
+    val data = MutableLiveData<String>()
+}
+```
+
+---
+
+### Why is it recommended to use only the default constructor to create a Fragment?
+
+Android system uses reflection to recreate fragments after configuration changes. It can only call the default constructor. Use `arguments` Bundle for passing data:
+
+```kotlin
+companion object {
+    fun newInstance(data: String) = MyFragment().apply {
+        arguments = bundleOf("key" to data)
+    }
+}
+```
+
+---
+
+### Why do we need to call setContentView() in onCreate() of Activity class?
+
+`setContentView()` inflates the layout XML and attaches it to the activity's window. Without it, the activity has no UI to display.
+
+---
+
+### When only onDestroy is called for an activity without onPause() and onStop()?
+
+During process death when the system kills the app for memory. The system doesn't call lifecycle methods in order, just terminates the process.
+
+---
+
+### singleTask launchMode in Android
+
+Creates at most one instance of the activity. If it exists, brings it to top and calls `onNewIntent()`:
+
+```xml
+<activity android:launchMode="singleTask" />
+```
+
+---
+
+### What is Multidex in Android?
+
+Allows apps to exceed the 65,536 method limit by splitting into multiple DEX files:
+
+```gradle
+android {
+    defaultConfig {
+        multiDexEnabled true
+    }
+}
+```
+
+---
+
+### Is it possible to force Garbage Collection in Android?
+
+No, you can only suggest it:
+
+```kotlin
+System.gc() // Just a hint, not guaranteed
+```
+
+Focus on proper lifecycle management instead.
+
+---
+
+## 🌍 Cross-Platform
+
+### Kotlin Multiplatform
+
+Share code across platforms while keeping UI native:
+
+- **Common Module:** Business logic, networking, data
+- **Platform-Specific:** UI and platform APIs
+- **expect/actual:** Platform-specific implementations
+
+```kotlin
+// Common
+expect fun platformName(): String
+
+// Android
+actual fun platformName(): String = "Android"
+
+// iOS
+actual fun platformName(): String = "iOS"
+```
