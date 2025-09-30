@@ -392,3 +392,32 @@ It is rare for an Activity's onDestroy() to be called without onPause() and onSt
 This scenario, often referred to as "process death," can occur when the app has been in the background for a long time and the system needs to free up resources for other apps. In this case, the system doesn't bother with the orderly shutdown of each component's lifecycle methods (onPause(), onStop()) and simply terminates the process.
 
 This is a key reason why you should always save important state and data in onPause() or onStop() and not rely on onDestroy() to be called.
+
+
+
+
+Coroutines are a concurrency design pattern in Kotlin that allows you to write asynchronous, non-blocking code in a sequential and easy-to-read manner. They are a lightweight alternative to traditional threads.
+
+Key Concepts
+
+Lightweight
+
+Coroutines are managed by the Kotlin runtime, not the operating system, making them much less resource-intensive than threads. You can run thousands of coroutines on a single thread, whereas creating a new thread for every task would quickly consume system memory and lead to performance issues.
+
+Structured Concurrency
+
+Coroutines promote structured concurrency, a programming paradigm that organizes concurrent tasks in a hierarchy. When you launch a coroutine, it runs within a CoroutineScope. This scope acts as a parent for the coroutine, and when the scope is canceled, all child coroutines are also canceled. This prevents resource leaks and simplifies error handling.
+
+Suspending Functions
+
+The core of coroutines are suspending functions, marked with the suspend keyword. A suspending function can be paused and resumed at a later time. When a suspend function needs to wait for a result (e.g., from a network request), it suspends the coroutine, freeing up the underlying thread to do other work. When the result is ready, the coroutine can resume its execution. This non-blocking behavior is a key advantage.
+
+Coroutines vs. Threads
+
+Feature	Coroutines	Threads
+Execution	Cooperative	Preemptive
+Resource Usage	Lightweight	Heavyweight
+Cancellation	Structured and easy	Difficult and error-prone
+Scope	Coroutine Scope	OS-level process
+
+While threads are managed by the operating system and are a unit of CPU execution, coroutines are managed by the application code and are a unit of work. Think of a thread as a physical assembly line in a factory, whereas a coroutine is a single task or item on that line. A few assembly lines can handle a vast number of tasks efficiently.
